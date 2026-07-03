@@ -1,0 +1,2857 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Conect Tattoo — O ecossistema completo para tatuadores: escola, perfil, projetos e produtos."/>
+  <title>Conect Tattoo — Ecossistema para Tatuadores</title>
+  <link rel="stylesheet" href="style.css"/>
+  <script>
+    (function () {
+      var saved = localStorage.getItem('conectTattooTheme');
+      var valid = ['clean', 'dark', 'tec'];
+      document.documentElement.setAttribute('data-theme', valid.indexOf(saved) !== -1 ? saved : 'dark');
+    })();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+
+  <!-- ===== PWA: manifest, ícones e cor de tema ===== -->
+  <link rel="manifest" href="manifest.json"/>
+  <meta name="theme-color" content="#0A0908"/>
+  <link rel="icon" href="icons/icon-192.png" type="image/png"/>
+  <link rel="apple-touch-icon" href="icons/icon-192.png"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+  <meta name="apple-mobile-web-app-title" content="Conect Tattoo"/>
+</head>
+<body>
+
+<!-- Fundo atmosférico contínuo: dourado-névoa / branco-fumaça / cinza-chumbo -->
+<div class="atmos-bg"></div>
+
+<!-- ===================== GATE (porta de entrada) ===================== -->
+<div class="gate" id="gate">
+
+  <!-- Barra preta no topo com o nome -->
+  <div class="gate-topbar">
+    <span class="gate-brand-text">CONECT TATTOO.</span>
+  </div>
+
+  <!-- Corpo cinza com headline e fotos cutout -->
+  <div class="gate-body">
+
+    <div class="gate-headline">
+      <h2>Centro de ensino on-line,</h2>
+      <p><strong>acelerando sua jornada na tatuagem.</strong></p>
+    </div>
+
+    <!-- Foto esquerda: modelo tatuado -->
+    <div class="gate-figure gate-figure-left">
+      <img src="fotos/modelo-sessao1.png" alt="Modelo Conect Tattoo" onerror="this.style.display='none'"/>
+    </div>
+
+    <!-- Foto direita: estátua/tatuagem nas costas -->
+    <div class="gate-figure gate-figure-right">
+      <img src="fotos/tattoo-sessao1.png" alt="Tatuagem nas costas — Conect Tattoo" onerror="this.style.display='none'"/>
+    </div>
+
+    <!-- Card central -->
+    <div class="gate-card" id="gateCard">
+      <h3 class="gate-card-title">Sign In</h3>
+
+      <form class="gate-form" id="gateForm">
+        <input type="email" placeholder="Email address" required/>
+        <input type="password" placeholder="Password" required/>
+        <a href="#" class="gate-forgot">Forgot Password?</a>
+        <button type="submit" class="btn-gate-signin">Sign in</button>
+      </form>
+
+      <button class="btn-gate-signup" id="gateSignup">Cadastre-se grátis</button>
+
+      <button class="gate-instagram" id="gateInstagram">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="0.6" fill="currentColor"/></svg>
+        @conect.tattoo
+      </button>
+
+      <button class="gate-guest" id="gateGuest">Acessar como visitante</button>
+    </div>
+
+    <!-- Aviso de scroll: contorno piscando + brilho -->
+    <div class="gate-scroll-hint" id="gateScrollHint">
+      <span>Cadastre-se ou entre pra continuar</span>
+    </div>
+
+  </div>
+
+  <!-- Ticker horizontal na base -->
+  <div class="gate-ticker-wrap">
+    <div class="ticker gate-ticker">
+      <span class="ticker-item">Biossegurança</span><span class="ticker-item sep">✦</span>
+      <span class="ticker-item acid">Materiais & Equipamentos</span><span class="ticker-item sep">✦</span>
+      <span class="ticker-item">Trilhas</span><span class="ticker-item sep">✦</span>
+      <span class="ticker-item acid">Técnica & Prática</span><span class="ticker-item sep">✦</span>
+      <span class="ticker-item">Comunidade</span><span class="ticker-item sep">✦</span>
+      <span class="ticker-item acid">Biblioteca</span><span class="ticker-item sep">✦</span>
+      <span class="ticker-item">Biossegurança</span><span class="ticker-item sep">✦</span>
+      <span class="ticker-item acid">Materiais & Equipamentos</span><span class="ticker-item sep">✦</span>
+      <span class="ticker-item">Trilhas</span><span class="ticker-item sep">✦</span>
+      <span class="ticker-item acid">Técnica & Prática</span><span class="ticker-item sep">✦</span>
+      <span class="ticker-item">Comunidade</span><span class="ticker-item sep">✦</span>
+      <span class="ticker-item acid">Biblioteca</span><span class="ticker-item sep">✦</span>
+    </div>
+  </div>
+</div>
+
+
+<!-- ===================== MODAL DE CADASTRO REAL ===================== -->
+<div class="gate-signup-modal" id="gateSignupModal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(10,9,8,0.85);align-items:center;justify-content:center;padding:20px;">
+  <div class="gate-signup-card" style="background:var(--bg,#3D3A36);border-radius:16px;padding:28px;max-width:380px;width:100%;position:relative;">
+    <button type="button" id="gateSignupClose" aria-label="Fechar" style="position:absolute;top:12px;right:14px;background:none;border:none;color:inherit;font-size:22px;cursor:pointer;">×</button>
+    <h3 style="margin-bottom:16px;">Criar conta</h3>
+    <form id="gateSignupForm" style="display:flex;flex-direction:column;gap:10px;">
+      <input type="text" id="suUsername" placeholder="@usuario (letras minúsculas, sem espaço)" required pattern="[a-z0-9_.]{3,20}" title="3-20 caracteres: letras minúsculas, números, . ou _"/>
+      <input type="text" id="suDisplayName" placeholder="Nome completo" required minlength="2"/>
+      <input type="email" id="suEmail" placeholder="E-mail" required/>
+      <input type="password" id="suPassword" placeholder="Senha (mín. 8, com letra e número)" required minlength="8"/>
+      <input type="password" id="suPasswordConfirm" placeholder="Confirmar senha" required minlength="8"/>
+      <p id="suError" style="display:none;color:#e05252;font-size:0.85em;"></p>
+      <button type="submit" class="btn-gate-signin">Criar conta</button>
+    </form>
+  </div>
+</div>
+
+<!-- ===================== BOTÃO DE MENU ===================== -->
+<div class="hub-topbar">
+  <button class="menu-trigger" id="menuTrigger" aria-label="Abrir menu">
+    <span></span><span></span><span></span>
+  </button>
+</div>
+
+<div class="side-drawer-overlay" id="sideDrawerOverlay"></div>
+<aside class="side-drawer" id="sideDrawer">
+  <div class="side-drawer-head">
+    <span class="logo-text">CONECT<span> TATTOO</span></span>
+    <button class="side-drawer-close" id="sideDrawerClose" aria-label="Fechar menu">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 3l10 10M13 3L3 13"/></svg>
+    </button>
+  </div>
+
+  <nav class="side-drawer-nav">
+    <a href="#" class="side-drawer-link side-drawer-home" id="drawerHomeLink">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3 10l7-7 7 7"/><path d="M5 9v8h10V9"/></svg>
+      Voltar ao início
+    </a>
+    <a href="#" class="side-drawer-link" id="drawerProfileLink" style="display:none;">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="10" cy="7" r="3"/><path d="M4 17c0-3.2 2.7-5 6-5s6 1.8 6 5"/></svg>
+      Meu Perfil
+    </a>
+    <a href="#chat" class="side-drawer-link" id="drawerChatLink" style="display:none;">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3 10a7 7 0 1114 0 7 7 0 01-11.5 5.3L3 17l1.7-3.5A6.96 6.96 0 013 10z"/></svg>
+      Comunidade / Chat
+    </a>
+    <a href="#" class="side-drawer-link" id="drawerLoginLink">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M8 4h6a2 2 0 012 2v8a2 2 0 01-2 2H8"/><path d="M3 10h9M9 7l3 3-3 3"/></svg>
+      Login
+    </a>
+    <a href="#cta-final" class="side-drawer-link" id="drawerCadastroLink">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="9" cy="7" r="3"/><path d="M3 17c0-3 2.5-5 6-5 1 0 1.9.16 2.7.46"/><path d="M15 9v6M12 12h6"/></svg>
+      Cadastre-se
+    </a>
+    <a href="#" class="side-drawer-link" id="drawerLogoutLink" style="display:none;">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M8 4H5a2 2 0 00-2 2v8a2 2 0 002 2h3"/><path d="M17 10H8M14 7l3 3-3 3"/></svg>
+      Trocar de conta / Sair
+    </a>
+    <a href="#" class="side-drawer-link" id="drawerInstallLink" style="display:none;">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="4" y="2" width="12" height="16" rx="2"/><path d="M8 15h4"/></svg>
+      Instalar App
+    </a>
+  </nav>
+
+  <div class="side-drawer-divider"></div>
+
+  <div class="side-drawer-info">
+    <p class="side-drawer-info-title">Precisa de ajuda?</p>
+    <a href="mailto:contato@conecttattoo.com.br" class="side-drawer-info-link">contato@conecttattoo.com.br</a>
+    <a href="#" class="side-drawer-info-link">Instagram @conect.tattoo</a>
+  </div>
+
+  <p class="side-drawer-footer-note">© 2025 Conect Tattoo</p>
+</aside>
+
+<!-- ===================== HERO — MAPA RADIAL (círculo + barras) ===================== -->
+<section id="hero" class="hub-fullscreen hub-radial-layout">
+
+  <!-- Seletor de tema -->
+  <div class="hub-theme-switcher" id="hubThemeSwitcher" role="group" aria-label="Escolher tema">
+    <button class="hub-theme-btn" data-theme-option="clean" aria-label="Tema claro" title="Clean">
+      <span class="hub-theme-dot"></span>
+    </button>
+    <button class="hub-theme-btn" data-theme-option="dark" aria-label="Tema escuro" title="Dark">
+      <span class="hub-theme-dot"></span>
+    </button>
+    <button class="hub-theme-btn" data-theme-option="tec" aria-label="Tema tecnológico" title="Tec">
+      <span class="hub-theme-dot"></span>
+    </button>
+  </div>
+
+  <!-- Pontos decorativos -->
+  <div class="hub-radial-dots">
+    <span class="hr-dot" style="top:8%;left:6%"></span>
+    <span class="hr-dot" style="top:6%;left:10%"></span>
+    <span class="hr-dot" style="top:18%;left:75%"></span>
+    <span class="hr-dot" style="top:80%;left:4%"></span>
+    <span class="hr-dot" style="top:85%;left:8%"></span>
+  </div>
+
+  <!-- Mapa: círculo + linhas + barras -->
+  <div class="hub-radial-map">
+
+    <!-- SVG das linhas conectoras -->
+    <svg class="hub-radial-svg" viewBox="0 0 1000 760" preserveAspectRatio="xMidYMid meet">
+      <defs>
+        <linearGradient id="rlgrad" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="var(--rl-line-a)"/>
+          <stop offset="100%" stop-color="var(--rl-line-b)"/>
+        </linearGradient>
+      </defs>
+      <path d="M340 380 L420 110 L560 110" stroke="url(#rlgrad)" stroke-width="1.4" fill="none"/>
+      <path d="M340 380 L420 245 L560 245" stroke="url(#rlgrad)" stroke-width="1.4" fill="none"/>
+      <path d="M340 380 L420 380 L560 380" stroke="url(#rlgrad)" stroke-width="1.4" fill="none"/>
+      <path d="M340 380 L420 515 L560 515" stroke="url(#rlgrad)" stroke-width="1.4" fill="none"/>
+      <path d="M340 380 L420 650 L560 650" stroke="url(#rlgrad)" stroke-width="1.4" fill="none"/>
+      <!-- nós nas curvas -->
+      <circle cx="420" cy="110" r="4" fill="var(--rl-line-b)"/>
+      <circle cx="420" cy="245" r="4" fill="var(--rl-line-b)"/>
+      <circle cx="420" cy="380" r="4" fill="var(--rl-line-b)"/>
+      <circle cx="420" cy="515" r="4" fill="var(--rl-line-b)"/>
+      <circle cx="420" cy="650" r="4" fill="var(--rl-line-b)"/>
+    </svg>
+
+    <!-- Círculo central -->
+    <div class="hub-radial-circle">
+      <div class="hub-radial-ring-progress"></div>
+      <div class="hub-radial-inner">
+        <svg viewBox="0 0 40 40" fill="none" width="34" height="34">
+          <circle cx="20" cy="8"  r="3.2" fill="url(#rglogo)"/>
+          <circle cx="8"  cy="30" r="3.2" fill="url(#rglogo)"/>
+          <circle cx="32" cy="30" r="3.2" fill="url(#rglogo)"/>
+          <circle cx="20" cy="20" r="2.3" fill="url(#rglogo)" opacity="0.5"/>
+          <line x1="20" y1="11" x2="20" y2="18" stroke="url(#rglogo)" stroke-width="1.3"/>
+          <line x1="20" y1="22" x2="10"  y2="28" stroke="url(#rglogo)" stroke-width="1.3"/>
+          <line x1="20" y1="22" x2="30"  y2="28" stroke="url(#rglogo)" stroke-width="1.3"/>
+          <defs><linearGradient id="rglogo" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#7B9EF0"/><stop offset="100%" stop-color="#A87BF5"/></linearGradient></defs>
+        </svg>
+        <h1 class="hub-radial-title">CONECT TATTOO <span class="hub-radial-version">1.0</span></h1>
+        <span class="hub-radial-divider"></span>
+        <p class="hub-radial-sub">O que faltava para<br>seu <em>studio.</em></p>
+      </div>
+      <span class="hr-dot hr-dot-edge" style="bottom:-6px;left:50%;"></span>
+    </div>
+
+    <!-- 5 Barras -->
+    <div class="hub-radial-bars">
+
+      <div class="hub-rbar" data-target="panel-perfilhub">
+        <div class="hub-rbar-icon">
+          <svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="14" cy="10" r="4.3"/><path d="M6 24c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg>
+        </div>
+        <div class="hub-rbar-text">
+          <h3>MY STUDIO</h3>
+          <p>Seu espaço profissional e personalizado.</p>
+        </div>
+        <button class="hub-rbar-btn"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 4l5 4-5 4"/></svg></button>
+      </div>
+
+      <div class="hub-rbar" data-target="panel-projetohub">
+        <div class="hub-rbar-icon hub-rbar-icon-ia">
+          <svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5"><ellipse cx="14" cy="14" rx="5.5" ry="5.5"/><path d="M14 4v3M14 21v3M4 14h3M21 14h3M7.05 7.05l2.12 2.12M18.83 18.83l2.12 2.12M18.83 7.05l-2.12 2.12M7.05 18.83l2.12-2.12"/></svg>
+        </div>
+        <div class="hub-rbar-text">
+          <h3>INTELIGÊNCIA ARTIFICIAL</h3>
+          <p>Ferramentas de IA para criar, simular e evoluir.</p>
+        </div>
+        <button class="hub-rbar-btn"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 4l5 4-5 4"/></svg></button>
+      </div>
+
+      <div class="hub-rbar" data-target="panel-produtoshub">
+        <div class="hub-rbar-icon">
+          <svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 6h10a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V8a2 2 0 012-2z"/><path d="M16 6V4h4v16h-4"/></svg>
+        </div>
+        <div class="hub-rbar-text">
+          <h3>RECURSOS</h3>
+          <p>Materiais, referências e ferramentas essenciais.</p>
+        </div>
+        <button class="hub-rbar-btn"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 4l5 4-5 4"/></svg></button>
+      </div>
+
+      <div class="hub-rbar" data-target="panel-school">
+        <div class="hub-rbar-icon">
+          <svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 4L4 9l10 5 10-5-10-5z"/><path d="M4 9v7"/><path d="M8 13.5v5a8 8 0 0012 0v-5"/></svg>
+        </div>
+        <div class="hub-rbar-text">
+          <h3>MAGNUM SCHOOL</h3>
+          <p>Escola online para tatuadores iniciantes.</p>
+        </div>
+        <button class="hub-rbar-btn"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 4l5 4-5 4"/></svg></button>
+      </div>
+
+      <div class="hub-rbar" data-target="panel-arena">
+        <div class="hub-rbar-icon">
+          <svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 3l3 6.2 6.8.9-5 4.7 1.3 6.8L14 18.3 7.9 21.6l1.3-6.8-5-4.7 6.8-.9z"/></svg>
+        </div>
+        <div class="hub-rbar-text">
+          <h3>ARENA</h3>
+          <p>Treinos, competições, eventos e ranking da comunidade.</p>
+        </div>
+        <button class="hub-rbar-btn"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 4l5 4-5 4"/></svg></button>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Bem-vindo -->
+  <div class="hub-radial-welcome">
+    <span>Bem vindo</span>
+    <strong id="hubWelcomeName">Tatuador</strong>
+  </div>
+
+</section>
+
+
+
+<!-- ===================== OVERLAY DE CONTEÚDO ===================== -->
+<div class="content-overlay" id="contentOverlay">
+
+  <div class="content-overlay-topbar">
+    <button class="content-back-btn" id="contentBackBtn">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 4l-6 6 6 6"/></svg>
+      Voltar
+    </button>
+    <span class="logo-text content-overlay-logo">CONECT<span> TATTOO</span></span>
+  </div>
+
+  <div class="content-overlay-scroll" id="contentOverlayScroll">
+
+    <!-- ===== PAINEL: MAGNUM SCHOOL ===== -->
+    <div class="content-panel" id="panel-school">
+
+      <!-- Ticker decorativo -->
+      <div class="ticker-wrap on-deep">
+        <div class="ticker">
+          <span class="ticker-item">Biossegurança</span><span class="ticker-item sep">✦</span>
+          <span class="ticker-item acid">Materiais & Equipamentos</span><span class="ticker-item sep">✦</span>
+          <span class="ticker-item">IA aplicada à tatuagem</span><span class="ticker-item sep">✦</span>
+          <span class="ticker-item acid">Questões jurídicas</span><span class="ticker-item sep">✦</span>
+          <span class="ticker-item">Workflow digital</span><span class="ticker-item sep">✦</span>
+          <span class="ticker-item acid">Técnica & prática</span><span class="ticker-item sep">✦</span>
+          <span class="ticker-item">Comunidade de tatuadores</span><span class="ticker-item sep">✦</span>
+          <span class="ticker-item acid">Especialistas por estilo</span><span class="ticker-item sep">✦</span>
+          <span class="ticker-item">Biossegurança</span><span class="ticker-item sep">✦</span>
+          <span class="ticker-item acid">Materiais & Equipamentos</span><span class="ticker-item sep">✦</span>
+          <span class="ticker-item">IA aplicada à tatuagem</span><span class="ticker-item sep">✦</span>
+          <span class="ticker-item acid">Questões jurídicas</span><span class="ticker-item sep">✦</span>
+        </div>
+      </div>
+
+<section id="proposito" class="theme-light">
+  <div class="container">
+    <div class="proposito-grid">
+      <div class="proposito-text fade-in">
+        <span class="eyebrow">Sobre Nós</span>
+        <h2 style="margin-top:20px;">Entrar na tatuagem sem informação custa caro.</h2>
+        <p style="margin-top:24px;">Em dinheiro, em saúde, em reputação. A maioria das pessoas que quer tatuar começa do jeito errado: equipamento barato, zero noção de biossegurança, sem saber o que a lei exige.</p>
+        <p style="margin-top:16px;">Não é falta de vontade. É falta de um caminho.</p>
+        <blockquote>"A tatuagem que vai durar a vida toda começa em quem sabe o que está fazendo."</blockquote>
+        <p style="font-style:italic;font-size:.88rem;">Sem romantismo. Sem atalho. Com respeito pelo ofício.</p>
+      </div>
+
+      <div class="glass-card fade-in fade-in-delay-2">
+        <h4>Como a Magnum School funciona</h4>
+        <p>Você escolhe a trilha, avança nos módulos gratuitos e, quando quiser ir mais fundo, acessa o conteúdo completo daquela trilha ou um ebook específico.</p>
+        <div class="mini-stats">
+          <div class="mini-stat"><div class="n">01</div><div class="l">Escolha a trilha</div></div>
+          <div class="mini-stat"><div class="n">02</div><div class="l">Estude o free</div></div>
+          <div class="mini-stat"><div class="n">03</div><div class="l">Aprofunde com ebooks</div></div>
+          <div class="mini-stat"><div class="n">04</div><div class="l">Entre na comunidade</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="trilhas" class="theme-dark">
+  <div class="container">
+    <div class="section-header fade-in">
+      <span class="eyebrow">As 3 trilhas</span>
+      <h2>Escolha por onde começar.</h2>
+      <p>Cada trilha reúne os módulos e materiais daquele tema. Comece pelo que faz mais sentido pra você agora — todas têm conteúdo gratuito pra te situar.</p>
+    </div>
+
+    <div class="trilhas-grid">
+
+      <!-- TRILHA 1 -->
+      <div class="trilha-card fade-in" data-tone="gold">
+        <div class="trilha-head">
+          <span class="trilha-num">Trilha 01</span>
+          <h3>O Ofício</h3>
+          <p>O mercado, o dia a dia, os estilos, a realidade financeira — e tudo sobre alvará, MEI e responsabilidade legal.</p>
+        </div>
+        <div class="trilha-body">
+          <div class="trilha-item">
+            <div class="trilha-item-info"><span class="ti-title">Entendendo o mercado</span><span class="ti-tag free">Gratuito</span></div>
+          </div>
+          <div class="trilha-item">
+            <div class="trilha-item-info"><span class="ti-title">Estilos e especialização</span><span class="ti-tag free">Gratuito</span></div>
+          </div>
+          <div class="trilha-item">
+            <div class="trilha-item-info"><span class="ti-title">Alvará & Vigilância Sanitária</span><span class="ti-tag">Ebook</span></div>
+          </div>
+          <div class="trilha-item">
+            <div class="trilha-item-info"><span class="ti-title">MEI e contrato com cliente</span><span class="ti-tag">Ebook</span></div>
+          </div>
+          <a href="#materiais" class="btn-ghost btn">Ver material complementar <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 7h12M8 2l5 5-5 5"/></svg></a>
+        </div>
+      </div>
+
+      <!-- TRILHA 2 -->
+      <div class="trilha-card fade-in fade-in-delay-1" data-tone="amber">
+        <div class="trilha-head">
+          <span class="trilha-num">Trilha 02</span>
+          <h3>Segurança & Materiais</h3>
+          <p>Biossegurança, esterilização, EPI e o guia completo de máquinas, tintas, agulhas e equipamentos.</p>
+        </div>
+        <div class="trilha-body">
+          <div class="trilha-item">
+            <div class="trilha-item-info"><span class="ti-title">Guia de biossegurança essencial</span><span class="ti-tag free">Gratuito</span></div>
+          </div>
+          <div class="trilha-item">
+            <div class="trilha-item-info"><span class="ti-title">Lista de materiais comentada</span><span class="ti-tag free">Gratuito</span></div>
+          </div>
+          <div class="trilha-item">
+            <div class="trilha-item-info"><span class="ti-title">Esterilização e descarte</span><span class="ti-tag">Ebook</span></div>
+          </div>
+          <div class="trilha-item">
+            <div class="trilha-item-info"><span class="ti-title">Comparativo de máquinas</span><span class="ti-tag">Ebook</span></div>
+          </div>
+          <a href="#materiais" class="btn-ghost btn">Ver material complementar <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 7h12M8 2l5 5-5 5"/></svg></a>
+        </div>
+      </div>
+
+      <!-- TRILHA 3 -->
+      <div class="trilha-card fade-in fade-in-delay-2" data-tone="neutral">
+        <div class="trilha-head">
+          <span class="trilha-num">Trilha 03</span>
+          <h3>Técnica & IA</h3>
+          <p>Desenho, transferência, sombreado e cicatrização — combinados com fluxo de trabalho digital e IA aplicada.</p>
+        </div>
+        <div class="trilha-body">
+          <div class="trilha-item">
+            <div class="trilha-item-info"><span class="ti-title">Fundamentos do traço</span><span class="ti-tag free">Gratuito</span></div>
+          </div>
+          <div class="trilha-item">
+            <div class="trilha-item-info"><span class="ti-title">Intro a IA na criação</span><span class="ti-tag free">Gratuito</span></div>
+          </div>
+          <div class="trilha-item">
+            <div class="trilha-item-info"><span class="ti-title">Sombreado e cicatrização</span><span class="ti-tag">Ebook</span></div>
+          </div>
+          <div class="trilha-item">
+            <div class="trilha-item-info"><span class="ti-title">Apostila completa de técnica</span><span class="ti-tag">Premium</span></div>
+          </div>
+          <a href="#materiais" class="btn-ghost btn">Ver material complementar <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 7h12M8 2l5 5-5 5"/></svg></a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section id="videoaulas" class="theme-dark">
+  <div class="container">
+    <div class="section-header fade-in">
+      <span class="eyebrow">Videoaulas</span>
+      <h2>Aprenda vendo na prática.</h2>
+      <p>Aulas em vídeo individuais, vendidas separadamente — sem precisar assinar nada. Assista quando quiser, no seu ritmo.</p>
+    </div>
+
+    <div class="materiais-filtros fade-in">
+      <span class="filtro-pill-video active">Todas</span>
+      <span class="filtro-pill-video">Gratuitas</span>
+      <span class="filtro-pill-video">Ofício</span>
+      <span class="filtro-pill-video">Segurança</span>
+      <span class="filtro-pill-video">Técnica</span>
+    </div>
+
+    <div class="videos-grid" id="videosGrid">
+
+      <div class="video-card fade-in" data-cat="técnica" data-free="true">
+        <div class="video-thumb">
+          <span class="video-duration">12 min</span>
+          <span class="ebook-price-badge free">Grátis</span>
+          <div class="play-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
+        </div>
+        <div class="ebook-body">
+          <span class="ebook-cat">Técnica</span>
+          <h4>Primeira linha: postura e pressão</h4>
+          <p>O básico de como posicionar a mão e controlar a máquina.</p>
+          <div class="ebook-footer">
+            <span class="ebook-price free-text">Gratuito</span>
+            <button class="btn-ghost btn btn-watch" style="padding:0;" data-title="Primeira linha: postura e pressão">Assistir →</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="video-card fade-in fade-in-delay-1" data-cat="segurança" data-free="true">
+        <div class="video-thumb">
+          <span class="video-duration">8 min</span>
+          <span class="ebook-price-badge free">Grátis</span>
+          <div class="play-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
+        </div>
+        <div class="ebook-body">
+          <span class="ebook-cat">Segurança</span>
+          <h4>Montando a estação de trabalho</h4>
+          <p>Passo a passo de organização e barreira de proteção.</p>
+          <div class="ebook-footer">
+            <span class="ebook-price free-text">Gratuito</span>
+            <button class="btn-ghost btn btn-watch" style="padding:0;" data-title="Montando a estação de trabalho">Assistir →</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="video-card fade-in fade-in-delay-2" data-cat="técnica">
+        <div class="video-thumb">
+          <span class="video-duration">24 min</span>
+          <span class="ebook-price-badge">R$ 15</span>
+          <div class="play-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
+        </div>
+        <div class="ebook-body">
+          <span class="ebook-cat">Técnica</span>
+          <h4>Sombreado em tempo real</h4>
+          <p>Acompanhe uma sessão completa de sombreado, do início ao fim.</p>
+          <div class="ebook-footer">
+            <span class="ebook-price">R$ 15</span>
+            <button class="btn-ghost btn btn-buy" style="padding:0;" data-title="Sombreado em tempo real" data-price="15">Comprar →</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="video-card fade-in" data-cat="ofício">
+        <div class="video-thumb">
+          <span class="video-duration">18 min</span>
+          <span class="ebook-price-badge">R$ 12</span>
+          <div class="play-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
+        </div>
+        <div class="ebook-body">
+          <span class="ebook-cat">Ofício</span>
+          <h4>Como precificar sua tatuagem</h4>
+          <p>Cálculo de custo, hora de trabalho e margem — sem chutar o preço.</p>
+          <div class="ebook-footer">
+            <span class="ebook-price">R$ 12</span>
+            <button class="btn-ghost btn btn-buy" style="padding:0;" data-title="Como precificar sua tatuagem" data-price="12">Comprar →</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="video-card fade-in fade-in-delay-1" data-cat="técnica">
+        <div class="video-thumb">
+          <span class="video-duration">31 min</span>
+          <span class="ebook-price-badge">R$ 19</span>
+          <div class="play-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
+        </div>
+        <div class="ebook-body">
+          <span class="ebook-cat">Técnica</span>
+          <h4>Transferência perfeita do desenho</h4>
+          <p>Stencil, posicionamento no corpo e como evitar retrabalho.</p>
+          <div class="ebook-footer">
+            <span class="ebook-price">R$ 19</span>
+            <button class="btn-ghost btn btn-buy" style="padding:0;" data-title="Transferência perfeita do desenho" data-price="19">Comprar →</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="video-card fade-in fade-in-delay-2" data-cat="segurança">
+        <div class="video-thumb">
+          <span class="video-duration">15 min</span>
+          <span class="ebook-price-badge">R$ 14</span>
+          <div class="play-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
+        </div>
+        <div class="ebook-body">
+          <span class="ebook-cat">Segurança</span>
+          <h4>Autoclave passo a passo</h4>
+          <p>Como operar, validar ciclos e manter o equipamento em dia.</p>
+          <div class="ebook-footer">
+            <span class="ebook-price">R$ 14</span>
+            <button class="btn-ghost btn btn-buy" style="padding:0;" data-title="Autoclave passo a passo" data-price="14">Comprar →</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="biblioteca-more fade-in">
+      <p>+ novas videoaulas toda semana. Posição reservada pra expandir o catálogo.</p>
+    </div>
+  </div>
+</section>
+
+<section id="feed" class="theme-dark">
+  <div class="container">
+    <div class="section-header fade-in">
+      <span class="eyebrow">Feed Magnum</span>
+      <h2>Sacadas de quem já tá na pele.</h2>
+      <p>Dicas rápidas, descobertas e experiências compartilhadas pela comunidade.</p>
+    </div>
+
+    <div class="feed-grid">
+
+      <div class="feed-card fade-in">
+        <div class="feed-head">
+          <div class="feed-avatar">RM</div>
+          <div>
+            <span class="feed-name">Rafa Mendes</span>
+            <span class="feed-handle">@rafa.tattoo</span>
+          </div>
+        </div>
+        <p class="feed-text">Dica rápida: testem diluir a tinta preta em sombreados muito grandes — economiza material e o degradê fica muito mais suave. Mudou meu jogo.</p>
+        <div class="feed-footer">
+          <button class="feed-like"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 17s-6.5-4-6.5-8.5A3.5 3.5 0 0110 6a3.5 3.5 0 016.5 2.5C16.5 13 10 17 10 17z"/></svg> 84</button>
+        </div>
+      </div>
+
+      <div class="feed-card fade-in fade-in-delay-1">
+        <div class="feed-head">
+          <div class="feed-avatar">LC</div>
+          <div>
+            <span class="feed-name">Lu Cardoso</span>
+            <span class="feed-handle">@lu.inkstudio</span>
+          </div>
+        </div>
+        <p class="feed-text">Cliente ansioso? Eu sempre explico o som da máquina antes de ligar. Parece bobo mas reduz muito a tensão na cadeira.</p>
+        <div class="feed-footer">
+          <button class="feed-like"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 17s-6.5-4-6.5-8.5A3.5 3.5 0 0110 6a3.5 3.5 0 016.5 2.5C16.5 13 10 17 10 17z"/></svg> 132</button>
+        </div>
+      </div>
+
+      <div class="feed-card fade-in fade-in-delay-2">
+        <div class="feed-head">
+          <div class="feed-avatar">DT</div>
+          <div>
+            <span class="feed-name">Diego Torres</span>
+            <span class="feed-handle">@diegot.tatuagem</span>
+          </div>
+        </div>
+        <p class="feed-text">Guardo print de toda referência que uso, com data e fonte. Já me salvou de mal-entendido sobre autoria mais de uma vez.</p>
+        <div class="feed-footer">
+          <button class="feed-like"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 17s-6.5-4-6.5-8.5A3.5 3.5 0 0110 6a3.5 3.5 0 016.5 2.5C16.5 13 10 17 10 17z"/></svg> 57</button>
+        </div>
+      </div>
+
+      <div class="feed-card fade-in">
+        <div class="feed-head">
+          <div class="feed-avatar">BS</div>
+          <div>
+            <span class="feed-name">Bia Souza</span>
+            <span class="feed-handle">@bia.blackwork</span>
+          </div>
+        </div>
+        <p class="feed-text">Comecei a fotografar a cicatrização com 7, 15 e 30 dias pra mandar pro cliente comparar. Virou diferencial do meu atendimento.</p>
+        <div class="feed-footer">
+          <button class="feed-like"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 17s-6.5-4-6.5-8.5A3.5 3.5 0 0110 6a3.5 3.5 0 016.5 2.5C16.5 13 10 17 10 17z"/></svg> 96</button>
+        </div>
+      </div>
+
+      <div class="feed-card fade-in fade-in-delay-1">
+        <div class="feed-head">
+          <div class="feed-avatar">PA</div>
+          <div>
+            <span class="feed-name">Pedro Alves</span>
+            <span class="feed-handle">@pedro.realismo</span>
+          </div>
+        </div>
+        <p class="feed-text">Sacada boba mas funciona: deixo um espelho atrás da cadeira pra cliente acompanhar o processo sem virar o pescoço toda hora.</p>
+        <div class="feed-footer">
+          <button class="feed-like"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 17s-6.5-4-6.5-8.5A3.5 3.5 0 0110 6a3.5 3.5 0 016.5 2.5C16.5 13 10 17 10 17z"/></svg> 41</button>
+        </div>
+      </div>
+
+      <div class="feed-card fade-in fade-in-delay-2">
+        <div class="feed-head">
+          <div class="feed-avatar">JN</div>
+          <div>
+            <span class="feed-name">Júlia Nantes</span>
+            <span class="feed-handle">@ju.finelinetattoo</span>
+          </div>
+        </div>
+        <p class="feed-text">Pra fine line eu sempre testo a profundidade da agulha numa folha de papel manteiga antes de começar. Evita linha grossa por excesso de pressão.</p>
+        <div class="feed-footer">
+          <button class="feed-like"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 17s-6.5-4-6.5-8.5A3.5 3.5 0 0110 6a3.5 3.5 0 016.5 2.5C16.5 13 10 17 10 17z"/></svg> 73</button>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="biblioteca-more fade-in">
+      <p>Faça login pra compartilhar sua própria sacada com a comunidade.</p>
+    </div>
+  </div>
+</section>
+
+<section id="recursos" class="theme-light">
+  <div class="container">
+
+    <div class="section-header fade-in">
+      <span class="eyebrow">Recursos</span>
+      <h2>Materiais prontos pro seu dia a dia.</h2>
+      <p>Fichas e documentos práticos pra usar direto no atendimento — baixe, imprima ou envie pro seu cliente.</p>
+    </div>
+
+    <div class="recursos-grid">
+
+      <div class="recurso-card fade-in">
+        <div class="recurso-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="7" x2="16" y2="7"/><line x1="8" y1="11" x2="16" y2="11"/><line x1="8" y1="15" x2="13" y2="15"/></svg>
+        </div>
+        <h4>Ficha de Anamnese</h4>
+        <p>Formulário completo de avaliação de saúde do cliente antes da sessão.</p>
+        <div class="ebook-footer">
+          <span class="ebook-price free-text">Gratuito</span>
+          <button class="btn-ghost btn btn-download" style="padding:0;" data-title="Ficha de Anamnese">Baixar PDF →</button>
+        </div>
+      </div>
+
+      <div class="recurso-card fade-in fade-in-delay-1">
+        <div class="recurso-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M12 21s-7-4.5-7-10a4 4 0 017-3 4 4 0 017 3c0 5.5-7 10-7 10z"/></svg>
+        </div>
+        <h4>Cuidados Pós-Tatuagem</h4>
+        <p>Guia ilustrado pra entregar ao cliente com todos os cuidados da cicatrização.</p>
+        <div class="ebook-footer">
+          <span class="ebook-price free-text">Gratuito</span>
+          <button class="btn-ghost btn btn-download" style="padding:0;" data-title="Cuidados Pós-Tatuagem">Baixar PDF →</button>
+        </div>
+      </div>
+
+      <div class="recurso-card fade-in fade-in-delay-2">
+        <div class="recurso-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
+        </div>
+        <h4>Encontrando Referências</h4>
+        <p>Como buscar e organizar referências visuais sem cair em plágio ou clichê.</p>
+        <div class="ebook-footer">
+          <span class="ebook-price free-text">Gratuito</span>
+          <button class="btn-ghost btn btn-download" style="padding:0;" data-title="Encontrando Referências">Baixar PDF →</button>
+        </div>
+      </div>
+
+      <div class="recurso-card fade-in" data-cat="ofício">
+        <div class="recurso-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M12 2a10 10 0 100 20 10 10 0 000-20z"/><path d="M12 6v6l4 2"/></svg>
+        </div>
+        <h4>Mapa de Partes Sensíveis</h4>
+        <p>Material visual pra mostrar ao cliente de primeira tattoo o nível de dor por região.</p>
+        <div class="ebook-footer">
+          <span class="ebook-price">R$ 9</span>
+          <button class="btn-ghost btn btn-buy" style="padding:0;" data-title="Mapa de Partes Sensíveis" data-price="9">Comprar →</button>
+        </div>
+      </div>
+
+      <div class="recurso-card fade-in fade-in-delay-1">
+        <div class="recurso-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M4 17V7l8-4 8 4v10l-8 4-8-4z"/><path d="M4 7l8 4 8-4M12 11v10"/></svg>
+        </div>
+        <h4>Termo de Consentimento</h4>
+        <p>Modelo jurídico pronto pra assinatura do cliente antes do procedimento.</p>
+        <div class="ebook-footer">
+          <span class="ebook-price">R$ 12</span>
+          <button class="btn-ghost btn btn-buy" style="padding:0;" data-title="Termo de Consentimento" data-price="12">Comprar →</button>
+        </div>
+      </div>
+
+      <div class="recurso-card fade-in fade-in-delay-2">
+        <div class="recurso-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="3" y="4" width="18" height="16" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="7" y1="13" x2="11" y2="13"/><line x1="7" y1="16" x2="9" y2="16"/></svg>
+        </div>
+        <h4>Checklist de Atendimento</h4>
+        <p>Roteiro completo do primeiro contato até a despedida do cliente.</p>
+        <div class="ebook-footer">
+          <span class="ebook-price free-text">Gratuito</span>
+          <button class="btn-ghost btn btn-download" style="padding:0;" data-title="Checklist de Atendimento">Baixar PDF →</button>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="biblioteca-more fade-in" style="margin-bottom:64px;">
+      <p>+ novas fichas todo mês. Posição reservada pra expandir os recursos.</p>
+    </div>
+
+    <div class="divider" style="margin-bottom:56px;"></div>
+
+    <div class="section-header fade-in">
+      <span class="eyebrow">Cursos Práticos & Lives</span>
+      <h2>Aprenda em tempo real, com quem já faz.</h2>
+      <p>Turmas com data marcada, interação direta e prática guiada — ao vivo ou em formato intensivo.</p>
+    </div>
+
+    <div class="cursos-grid">
+
+      <div class="curso-card destaque fade-in">
+        <div class="curso-tag-live">
+          <span class="live-dot"></span> Próxima turma
+        </div>
+        <span class="ebook-cat">Técnica · Live ao vivo</span>
+        <h3>Imersão de Sombreado</h3>
+        <p>Aula prática ao vivo com correção em tempo real. Vagas limitadas pra garantir atenção individual.</p>
+        <div class="curso-info-row">
+          <span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2" y="3" width="12" height="11" rx="1"/><line x1="2" y1="6.5" x2="14" y2="6.5"/></svg> 14 de julho</span>
+          <span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 1.5"/></svg> 19h · 2h de duração</span>
+        </div>
+        <div class="ebook-footer" style="margin-top:8px;">
+          <span class="ebook-price">R$ 79</span>
+          <button class="btn btn-primary btn-buy" data-title="Imersão de Sombreado (Live)" data-price="79">Garantir vaga</button>
+        </div>
+      </div>
+
+      <div class="curso-card fade-in fade-in-delay-1">
+        <span class="ebook-cat">Ofício · Curso intensivo</span>
+        <h3>Do Zero ao Primeiro Cliente</h3>
+        <p>Curso prático em 4 módulos guiados, com tarefas e feedback direto da equipe Magnum School.</p>
+        <div class="curso-info-row">
+          <span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 1.5"/></svg> 4 módulos · acesso imediato</span>
+        </div>
+        <div class="ebook-footer" style="margin-top:8px;">
+          <span class="ebook-price">R$ 97</span>
+          <button class="btn-ghost btn btn-buy" style="padding:0;" data-title="Do Zero ao Primeiro Cliente" data-price="97">Inscrever-se →</button>
+        </div>
+      </div>
+
+      <div class="curso-card fade-in fade-in-delay-2">
+        <div class="curso-tag-live">
+          <span class="live-dot"></span> Próxima turma
+        </div>
+        <span class="ebook-cat">Segurança · Live ao vivo</span>
+        <h3>Biossegurança na Prática</h3>
+        <p>Demonstração ao vivo de montagem de estação e protocolo de esterilização, com Q&A.</p>
+        <div class="curso-info-row">
+          <span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2" y="3" width="12" height="11" rx="1"/><line x1="2" y1="6.5" x2="14" y2="6.5"/></svg> 28 de julho</span>
+          <span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 1.5"/></svg> 20h · 1h30 de duração</span>
+        </div>
+        <div class="ebook-footer" style="margin-top:8px;">
+          <span class="ebook-price">R$ 49</span>
+          <button class="btn-ghost btn btn-buy" style="padding:0;" data-title="Biossegurança na Prática (Live)" data-price="49">Garantir vaga →</button>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="biblioteca-more fade-in">
+      <p>+ novas turmas todo mês. Posição reservada pra expandir a agenda de lives e cursos.</p>
+    </div>
+  </div>
+</section>
+
+<section id="planos" class="theme-dark">
+  <div class="container">
+    <div class="section-header fade-in">
+      <span class="eyebrow">Planos</span>
+      <h2>Escolha como quer evoluir.</h2>
+      <p>Comece de graça, evolua pro Pro quando quiser ir além do básico, ou tenha tudo liberado no Premium.</p>
+    </div>
+
+    <div class="planos-grid">
+
+      <div class="plano-card fade-in">
+        <span class="plano-nome">Free</span>
+        <div class="plano-preco">R$ 0<span>/sempre</span></div>
+        <p>Pra começar e entender se a tatuagem é o seu caminho.</p>
+        <ul class="plano-lista">
+          <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="2,8 6,12 14,4"/></svg>Acesso aos módulos introdutórios das 3 trilhas</li>
+          <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="2,8 6,12 14,4"/></svg>Ebooks e fichas gratuitas da biblioteca</li>
+          <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="2,8 6,12 14,4"/></svg>Vídeos introdutórios gratuitos</li>
+          <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="2,8 6,12 14,4"/></svg>Acesso à comunidade</li>
+        </ul>
+        <button class="btn btn-outline" style="width:100%;justify-content:center;" data-title="Plano Free" data-price="">Começar grátis</button>
+      </div>
+
+      <div class="plano-card destaque fade-in fade-in-delay-1">
+        <span class="plano-badge">Mais escolhido</span>
+        <span class="plano-nome">Pro</span>
+        <div class="plano-preco">R$ 39<span>/mês</span></div>
+        <p>Pra quem já decidiu seguir e quer profundidade nas 3 trilhas.</p>
+        <ul class="plano-lista">
+          <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="2,8 6,12 14,4"/></svg>Tudo do Free, mais:</li>
+          <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="2,8 6,12 14,4"/></svg>Trilhas completas (Ofício, Segurança, Técnica)</li>
+          <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="2,8 6,12 14,4"/></svg>20% de desconto em toda a biblioteca</li>
+          <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="2,8 6,12 14,4"/></svg>2 videoaulas pagas por mês inclusas</li>
+          <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="2,8 6,12 14,4"/></svg>Prioridade nas vagas de lives</li>
+        </ul>
+        <button class="btn btn-primary btn-buy" style="width:100%;justify-content:center;" data-title="Plano Pro (mensal)" data-price="39">Assinar Pro</button>
+      </div>
+
+      <div class="plano-card fade-in fade-in-delay-2">
+        <span class="plano-nome">Premium</span>
+        <div class="plano-preco">R$ 89<span>/mês</span></div>
+        <p>Acesso total — pra quem quer dominar o ofício de ponta a ponta.</p>
+        <ul class="plano-lista">
+          <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="2,8 6,12 14,4"/></svg>Tudo do Pro, mais:</li>
+          <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="2,8 6,12 14,4"/></svg>As 2 apostilas completas inclusas</li>
+          <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="2,8 6,12 14,4"/></svg>Acesso ilimitado a videoaulas</li>
+          <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="2,8 6,12 14,4"/></svg>1 vaga garantida em live por mês</li>
+          <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="2,8 6,12 14,4"/></svg>Todos os recursos/fichas inclusos</li>
+          <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="2,8 6,12 14,4"/></svg>Suporte prioritário</li>
+        </ul>
+        <button class="btn btn-outline btn-buy" style="width:100%;justify-content:center;" data-title="Plano Premium (mensal)" data-price="89">Assinar Premium</button>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section id="comunidade" class="theme-deep">
+  <div class="container">
+    <div class="comunidade-inner">
+      <div class="fade-in">
+        <span class="eyebrow">Comunidade</span>
+        <h2 style="margin-top:20px;">Você não vai aprender sozinho. E não precisa.</h2>
+        <p style="margin-top:24px;">A comunidade é onde o aprendizado vira conversa, onde a dúvida encontra resposta e onde o iniciante encontra quem já passou pelo mesmo caminho.</p>
+        <p class="comunidade-quote" style="margin-top:32px;">"Aprendi mais errando perto de quem sabia do que acertando sozinho."</p>
+        <span class="comunidade-author">— Comunidade Magnum</span>
+        <div class="btn-group">
+          <a href="#cta-final" class="btn btn-outline">Entrar na comunidade <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 7h12M8 2l5 5-5 5"/></svg></a>
+        </div>
+      </div>
+
+      <div class="comunidade-cards fade-in fade-in-delay-2">
+        <div class="comunidade-feature">
+          <span class="feature-num">01</span>
+          <div><h4>Troca entre aprendizes</h4><p>Espaço pra compartilhar dúvidas e progresso com quem está na mesma jornada.</p></div>
+        </div>
+        <div class="comunidade-feature">
+          <span class="feature-num">02</span>
+          <div><h4>Feedback de experientes</h4><p>Tatuadores com trajetória disponíveis pra orientar quem está começando.</p></div>
+        </div>
+        <div class="comunidade-feature">
+          <span class="feature-num">03</span>
+          <div><h4>Ambiente que respeita o processo</h4><p>Sem pressa, sem julgamento. Cada um no seu tempo.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="tech" class="theme-dark">
+  <div class="container">
+    <div class="section-header fade-in">
+      <span class="eyebrow">Tecnologia</span>
+      <h2>Onde a técnica encontra a tecnologia.</h2>
+      <p>A Magnum School também é um laboratório onde arte e tecnologia se encontram para elevar o padrão do profissional.</p>
+    </div>
+
+    <div class="tech-grid">
+      <div class="tech-card fade-in">
+        <div class="tech-icon"><svg viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.3"><circle cx="11" cy="11" r="9"/><path d="M8 11l2 2 4-4"/></svg></div>
+        <div class="tech-body"><h4>IA na Criação</h4><p>Gere referências, teste composições e otimize projetos antes de tocar na pele.</p></div>
+      </div>
+      <div class="tech-card fade-in fade-in-delay-1">
+        <div class="tech-icon"><svg viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="3" y="2" width="16" height="20" rx="2"/><line x1="7" y1="7" x2="15" y2="7"/><line x1="7" y1="11" x2="15" y2="11"/></svg></div>
+        <div class="tech-body"><h4>Workflow Digital</h4><p>iPad, Procreate e Apple Pencil configurados pra garantir precisão do desenho à transferência.</p></div>
+      </div>
+      <div class="tech-card fade-in fade-in-delay-2">
+        <div class="tech-icon"><svg viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
+        <div class="tech-body"><h4>Automação de Atendimento</h4><p>Robôs de IA garantindo agendamento ágil e profissional, 24h por dia.</p></div>
+      </div>
+      <div class="tech-card fade-in fade-in-delay-3">
+        <div class="tech-icon"><svg viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="2" y="2" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="2"/><path d="M14 8h2M14 12h2M8 12h2M8 16h2"/></svg></div>
+        <div class="tech-body"><h4>Instagram como Vitrine</h4><p>Transforme sua rede social em galeria de arte que constrói autoridade e vende por você.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="especialistas" class="theme-light">
+  <div class="container">
+    <div class="especialistas-inner">
+      <div class="fade-in">
+        <span class="eyebrow">Especialistas — Em breve</span>
+        <h2 style="margin-top:20px;">Cada estilo tem uma voz.</h2>
+        <p style="margin-top:24px;">Em breve, tatuadores de referência em diferentes estilos estarão aqui — cada um com sua trajetória e seu olhar.</p>
+        <form class="lead-form" id="especialistasForm" style="margin-top:24px;">
+          <input type="email" placeholder="seu@email.com" required/>
+          <button type="submit">Me avisar</button>
+        </form>
+        <p class="form-success" id="especialistasSuccess">✓ Anotado! Te avisamos no lançamento.</p>
+      </div>
+
+      <div class="fade-in fade-in-delay-2">
+        <div class="estilos-grid">
+          <span class="estilo-pill active">Old School</span>
+          <span class="estilo-pill">Realismo</span>
+          <span class="estilo-pill">Blackwork</span>
+          <span class="estilo-pill">Aquarela</span>
+          <span class="estilo-pill">Fine Line</span>
+          <span class="estilo-pill">Geométrico</span>
+          <span class="estilo-pill">Japonês</span>
+          <span class="estilo-pill">Tribal</span>
+          <span class="estilo-pill">Lettering</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="impacto" class="theme-dark">
+  <div class="container">
+    <div class="impacto-inner fade-in">
+      <span class="eyebrow">Impacto</span>
+      <h2 style="margin-top:20px;">Formar bem é proteger a arte.</h2>
+      <p style="margin-top:26px;font-size:1.05rem;max-width:580px;margin-left:auto;margin-right:auto;">Cada tatuador que entra no mercado preparado é um cliente a menos com complicação, uma arte que vai durar do jeito que foi prometida.</p>
+      <p class="impacto-big">"Quando o padrão sobe, a arte cresce junto."</p>
+    </div>
+  </div>
+</section>
+
+<section id="cta-final" class="theme-light">
+  <div class="container">
+    <div class="cta-inner fade-in">
+      <span class="eyebrow">Próximo passo</span>
+      <h2>Pronto pra dar o primeiro traço com consciência?</h2>
+      <p>O caminho começa com informação. Cadastre seu e-mail e acesse o conteúdo gratuito agora.</p>
+      <form class="lead-form" id="mainLeadForm">
+        <input type="email" placeholder="seu@email.com" required/>
+        <button type="submit">Começar agora</button>
+      </form>
+      <p class="form-success" id="mainLeadSuccess">✓ Perfeito! Acesso enviado pro seu e-mail.</p>
+      <p style="font-size:.74rem;color:var(--text-3);margin-top:4px;">Sem spam. Dados protegidos conforme a LGPD.</p>
+    </div>
+  </div>
+</section>
+    
+
+<footer id="footer">
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <a href="#" class="nav-logo">
+          <svg class="logo-mark" viewBox="0 0 32 32" fill="none">
+            <circle cx="16" cy="16" r="14.5" stroke="#C9A24C" stroke-opacity="0.4"/>
+            <path d="M9 17 L16 7 L23 17 L16 27 Z" stroke="#C9A24C" stroke-width="1" fill="none"/>
+            <circle cx="16" cy="17" r="2" fill="#C9A24C"/>
+          </svg>
+          <span class="logo-text">CONECT<span> TATTOO</span></span>
+        </a>
+        <p>Tatuagem é arte. Arte exige preparo. Começa aqui.</p>
+      </div>
+      <div class="footer-links">
+        <h5>Trilhas</h5>
+        <ul>
+          <li><a href="#trilhas">O Ofício</a></li>
+          <li><a href="#trilhas">Segurança & Materiais</a></li>
+          <li><a href="#trilhas">Técnica & IA</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h5>Plataforma</h5>
+        <ul>
+          <li><a href="#materiais">Ebooks</a></li>
+          <li><a href="#videoaulas">Videoaulas</a></li>
+          <li><a href="#cursos">Cursos & Lives</a></li>
+          <li><a href="#comunidade">Comunidade</a></li>
+          <li><a href="#especialistas">Especialistas</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h5>Contato</h5>
+        <ul>
+          <li><a href="mailto:contato@conecttattoo.com.br">contato@conecttattoo.com.br</a></li>
+          <li><a href="#">Instagram</a></li>
+          <li><a href="#">Política de Privacidade</a></li>
+          <li><a href="#">LGPD</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 Conect Tattoo. Todos os direitos reservados.</p>
+      <p>Feito com precisão e propósito.</p>
+    </div>
+  </div>
+</footer>
+
+    </div>
+
+    <!-- ===== PAINEL: PERFIL DO TATUADOR ===== -->
+    <div class="content-panel" id="panel-perfilhub">
+<section id="perfil" class="theme-light">
+  <div class="container">
+    <div class="section-header fade-in">
+      <span class="eyebrow">Meu Perfil</span>
+      <h2>Sua conta no Conect Tattoo.</h2>
+      <p>Acompanhe seu progresso, suas compras e seus pontos acumulados.</p>
+    </div>
+
+    <div class="perfil-grid fade-in">
+
+      <div class="perfil-card perfil-main">
+        <div class="perfil-avatar-row">
+          <div class="perfil-avatar-big" id="perfilAvatarBig">V</div>
+          <div>
+            <h3 id="perfilNome" style="margin-bottom:4px;">Visitante</h3>
+            <span id="perfilUsername" style="display:block;opacity:0.6;font-size:0.85em;margin-bottom:4px;"></span>
+            <span class="perfil-plano-tag" id="perfilPlanoTag">Plano Free</span>
+          </div>
+        </div>
+        <div class="perfil-mini-stats">
+          <div class="mini-stat"><div class="n" id="perfilPontos">120</div><div class="l">Pontos acumulados</div></div>
+          <div class="mini-stat"><div class="n">3</div><div class="l">Ebooks adquiridos</div></div>
+          <div class="mini-stat"><div class="n">1</div><div class="l">Trilha em progresso</div></div>
+        </div>
+        <button class="btn btn-outline" style="margin-top:18px;" id="perfilLogoutBtn">Sair da conta</button>
+
+        <label for="perfilAvatarInput" style="display:inline-block;margin-top:10px;font-size:0.85em;cursor:pointer;text-decoration:underline;">
+          Trocar foto de perfil
+        </label>
+        <input type="file" id="perfilAvatarInput" accept="image/*" style="display:none;"/>
+      </div>
+
+      <div class="perfil-card">
+        <h4>Perfil público (visível no Chat)</h4>
+        <form id="perfilPublicoForm">
+          <label style="font-size:0.85em;display:block;margin-bottom:4px;">Bio</label>
+          <textarea id="perfilBioInput" maxlength="200" rows="3" placeholder="Conte um pouco sobre seu trabalho..." style="width:100%;margin-bottom:10px;"></textarea>
+
+          <label style="font-size:0.85em;display:block;margin-bottom:4px;">Instagram (sem @)</label>
+          <input type="text" id="perfilInstaInput" placeholder="seu.usuario" style="width:100%;margin-bottom:10px;"/>
+
+          <label style="display:flex;align-items:center;gap:8px;margin-bottom:12px;font-size:0.9em;">
+            <input type="checkbox" id="perfilPublicoToggle" checked/>
+            Perfil público (qualquer um pode ver e pedir pra seguir/conversar)
+          </label>
+
+          <button type="submit" class="btn btn-outline">Salvar perfil público</button>
+        </form>
+
+        <div style="margin-top:16px;">
+          <label style="font-size:0.85em;display:block;margin-bottom:8px;">Fotos de trampo (até 5)</label>
+          <div id="perfilFotosGrid" class="perfil-fotos-grid"></div>
+          <label for="perfilFotoTrampoInput" class="btn btn-outline" style="margin-top:10px;display:inline-block;cursor:pointer;">
+            + Adicionar foto
+          </label>
+          <input type="file" id="perfilFotoTrampoInput" accept="image/*" style="display:none;"/>
+        </div>
+      </div>
+
+      <div class="perfil-card">
+        <h4>Trilhas em andamento</h4>
+        <div class="perfil-progress-item">
+          <div class="perfil-progress-head"><span>Segurança & Materiais</span><span>40%</span></div>
+          <div class="perfil-progress-bar"><div class="perfil-progress-fill" style="width:40%;"></div></div>
+        </div>
+        <div class="perfil-progress-item">
+          <div class="perfil-progress-head"><span>O Ofício</span><span>15%</span></div>
+          <div class="perfil-progress-bar"><div class="perfil-progress-fill" style="width:15%;"></div></div>
+        </div>
+        <div class="perfil-progress-item">
+          <div class="perfil-progress-head"><span>Técnica & IA</span><span>0%</span></div>
+          <div class="perfil-progress-bar"><div class="perfil-progress-fill" style="width:0%;"></div></div>
+        </div>
+      </div>
+
+      <div class="perfil-card">
+        <h4>Minhas compras</h4>
+        <div class="perfil-compra-item">
+          <span>Biossegurança Essencial</span>
+          <span class="perfil-compra-tag">Gratuito</span>
+        </div>
+        <div class="perfil-compra-item">
+          <span>Alvará & Vigilância Sanitária</span>
+          <span class="perfil-compra-tag">R$ 19</span>
+        </div>
+        <div class="perfil-compra-item">
+          <span>Fundamentos do Traço</span>
+          <span class="perfil-compra-tag">Gratuito</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Ferramentas de gestão do studio -->
+    <div class="perfil-tools-header fade-in">
+      <span class="eyebrow">Gestão do Studio</span>
+      <h3>Suas ferramentas de trabalho.</h3>
+    </div>
+
+    <div class="perfil-tools-grid fade-in">
+
+      <div class="perfil-tool-card" id="perfil-anamnese">
+        <div class="perfil-tool-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="7" x2="16" y2="7"/><line x1="8" y1="11" x2="16" y2="11"/><line x1="8" y1="15" x2="13" y2="15"/></svg>
+        </div>
+        <h4>Ficha de Anamnese</h4>
+        <p>Formulário de avaliação de saúde do cliente, pronto pra usar antes da sessão.</p>
+        <button class="btn-ghost btn btn-download" style="padding:0;" data-title="Ficha de Anamnese">Baixar PDF →</button>
+      </div>
+
+      <div class="perfil-tool-card" id="perfil-cuidados">
+        <div class="perfil-tool-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M12 21s-7-4.5-7-10a4 4 0 017-3 4 4 0 017 3c0 5.5-7 10-7 10z"/></svg>
+        </div>
+        <h4>Cuidados Pós-Tattoo</h4>
+        <p>Guia ilustrado pra entregar ao cliente com os cuidados da cicatrização.</p>
+        <button class="btn-ghost btn btn-download" style="padding:0;" data-title="Cuidados Pós-Tattoo">Baixar PDF →</button>
+      </div>
+
+      <div class="perfil-tool-card perfil-tool-soon" id="perfil-clientes">
+        <div class="perfil-tool-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><circle cx="8" cy="9" r="3"/><circle cx="17" cy="9" r="3"/><path d="M2 19c0-3 2.5-5 6-5s6 2 6 5M12 19c0-2.5 2-4.5 5-4.5s5 2 5 4.5"/></svg>
+        </div>
+        <span class="perfil-tool-badge">Em breve</span>
+        <h4>Gestão de Clientes</h4>
+        <p>Cadastro, histórico de sessões e contato — tudo organizado num só painel.</p>
+        <div class="perfil-tool-mock">
+          <div class="perfil-tool-mock-row"><span class="mock-dot"></span><span class="mock-bar" style="width:70%;"></span></div>
+          <div class="perfil-tool-mock-row"><span class="mock-dot"></span><span class="mock-bar" style="width:45%;"></span></div>
+          <div class="perfil-tool-mock-row"><span class="mock-dot"></span><span class="mock-bar" style="width:60%;"></span></div>
+        </div>
+      </div>
+
+      <div class="perfil-tool-card perfil-tool-soon" id="perfil-studio">
+        <div class="perfil-tool-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M3 21V9l9-6 9 6v12"/><path d="M9 21v-7h6v7"/></svg>
+        </div>
+        <span class="perfil-tool-badge">Em breve</span>
+        <h4>Gestão do Studio</h4>
+        <p>Agenda, controle de estoque de materiais e faturamento num lugar só.</p>
+        <div class="perfil-tool-mock">
+          <div class="perfil-tool-mock-chart">
+            <span style="height:35%;"></span><span style="height:60%;"></span><span style="height:42%;"></span><span style="height:78%;"></span><span style="height:50%;"></span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Atendimento ao cliente -->
+    <div class="perfil-tools-header fade-in">
+      <span class="eyebrow">Atendimento ao Cliente</span>
+      <h3>Como seu cliente chega até você.</h3>
+    </div>
+
+    <div class="perfil-atendimento-grid fade-in">
+
+      <div class="perfil-atendimento-card">
+        <div class="perfil-tool-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M17.5 14.4c-.3-.1-1.6-.8-1.9-.9-.2-.1-.4-.1-.6.1-.2.2-.6.9-.8 1-.2.2-.3.2-.6.1-1.9-.9-3.1-2.7-3.2-2.8-.1-.2 0-.3.1-.5.2-.2.5-.5.6-.7.1-.2 0-.3 0-.5-.1-.2-.6-1.5-.8-2-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.2.2-.9.9-.9 2.2s.9 2.5 1.1 2.7c.1.2 1.9 2.9 4.6 4 2.7 1 2.7.7 3.1.6.4 0 1.3-.5 1.5-1 .2-.5.2-.9.1-1-.1-.1-.2-.2-.5-.2z"/><circle cx="12" cy="12" r="9.5"/></svg>
+        </div>
+        <h4>Auto Atendimento</h4>
+        <p>O cliente preenche um formulário rápido com a ideia da tatuagem, e você recebe um card pronto com tudo organizado — direto no seu WhatsApp.</p>
+        <button class="btn btn-primary" id="abrirAutoAtendimento" type="button">Configurar Auto Atendimento</button>
+      </div>
+
+      <div class="perfil-atendimento-card perfil-tool-soon">
+        <div class="perfil-tool-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="5" y="7" width="14" height="12" rx="2"/><circle cx="9.5" cy="12.5" r="1.2"/><circle cx="14.5" cy="12.5" r="1.2"/><path d="M12 7V4M9 4h6"/></svg>
+        </div>
+        <span class="perfil-tool-badge">Em breve</span>
+        <h4>Tattoo Bot</h4>
+        <p>Um assistente automático que conversa com o cliente, responde dúvidas comuns e já encaminha pro Auto Atendimento ou direto pra você.</p>
+        <button class="btn btn-outline" disabled style="opacity:0.6; cursor:not-allowed;">Em breve</button>
+      </div>
+
+    </div>
+  </div>
+</section>
+    </div>
+
+    <!-- ===================== MODAL: AUTO ATENDIMENTO ===================== -->
+    <div class="autoatend-overlay" id="autoatendOverlay">
+      <div class="autoatend-modal">
+        <button class="checkout-close" id="autoatendClose">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 3l10 10M13 3L3 13"/></svg>
+        </button>
+
+        <span class="eyebrow">Auto Atendimento</span>
+        <h3 style="margin-top:10px;">Solicitar uma tatuagem</h3>
+        <p style="font-size:0.85rem; margin-top:6px;">Preencha os dados abaixo. No final, geramos um card organizado pra você enviar pro studio.</p>
+
+        <form class="autoatend-form" id="autoatendForm">
+          <input type="text" id="aaNome" placeholder="Seu nome completo" required/>
+          <input type="text" id="aaContato" placeholder="WhatsApp ou e-mail para contato" required/>
+          <input type="text" id="aaLocal" placeholder="Local do corpo (ex: antebraço direito)" required/>
+          <input type="text" id="aaTamanho" placeholder="Tamanho aproximado (ex: 10x15cm)" required/>
+          <input type="date" id="aaData" placeholder="Disponibilidade de data"/>
+          <input type="file" id="aaReferencia" accept="image/*" hidden/>
+          <button type="button" class="autoatend-file-btn" id="aaReferenciaBtn">
+            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M10 13.5V4M6 7.5l4-4 4 4"/><path d="M4 13.5v2a2 2 0 002 2h8a2 2 0 002-2v-2"/></svg>
+            <span id="aaReferenciaLabel">Anexar referência de imagem (opcional)</span>
+          </button>
+          <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center; margin-top:6px;">
+            Gerar card de solicitação
+            <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 7h12M8 2l5 5-5 5"/></svg>
+          </button>
+        </form>
+
+        <!-- Preview do card formatado (aparece depois do envio) -->
+        <div class="autoatend-result" id="autoatendResult" style="display:none;">
+          <div class="autoatend-card-preview">
+            <div class="autoatend-card-head">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.6-.8-1.9-.9-.2-.1-.4-.1-.6.1-.2.2-.6.9-.8 1-.2.2-.3.2-.6.1-1.9-.9-3.1-2.7-3.2-2.8-.1-.2 0-.3.1-.5.2-.2.5-.5.6-.7.1-.2 0-.3 0-.5-.1-.2-.6-1.5-.8-2-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.2.2-.9.9-.9 2.2s.9 2.5 1.1 2.7c.1.2 1.9 2.9 4.6 4 2.7 1 2.7.7 3.1.6.4 0 1.3-.5 1.5-1 .2-.5.2-.9.1-1-.1-.1-.2-.2-.5-.2z"/></svg>
+              Nova solicitação de tatuagem
+            </div>
+            <div class="autoatend-card-body" id="autoatendCardBody"></div>
+          </div>
+          <p class="decalque-disclaimer" style="margin-top:14px;">* Simulação visual. Em breve, esse card será enviado automaticamente pro WhatsApp do studio.</p>
+          <button class="btn-ghost btn" id="autoatendNovaSolicitacao" style="margin-top:8px;">← Fazer nova solicitação</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== PAINEL: COMUNIDADE / CHAT ===== -->
+    <div class="content-panel" id="panel-chat">
+<section id="chat" class="theme-light">
+  <div class="container">
+    <div class="section-header fade-in">
+      <span class="eyebrow">Comunidade</span>
+      <h2>Fale com outros tatuadores.</h2>
+      <p>Chat global aberto e conversas privadas — sempre por solicitação aceita.</p>
+    </div>
+
+    <div class="chat-tabs fade-in">
+      <button type="button" class="chat-tab-btn active" data-chattab="global">Global</button>
+      <button type="button" class="chat-tab-btn" data-chattab="privado">Privado</button>
+      <button type="button" class="chat-tab-btn" data-chattab="solicitacoes">Solicitações</button>
+      <button type="button" class="chat-tab-btn" data-chattab="perfil-busca">Encontrar pessoas</button>
+    </div>
+
+    <div class="chat-tab-panel active" data-chatpanel="global">
+      <div class="chat-messages" id="chatGlobalMessages"></div>
+      <form class="chat-input-row" id="chatGlobalForm">
+        <input type="text" id="chatGlobalInput" maxlength="1000" placeholder="Fala mundo!!"/>
+        <button type="submit" class="btn btn-primary">Enviar</button>
+      </form>
+    </div>
+
+    <div class="chat-tab-panel" data-chatpanel="privado">
+      <div class="chat-private-layout">
+        <div class="chat-conversations-list" id="chatConversationsList"></div>
+        <div class="chat-conversation-active" id="chatConversationActive">
+          <p class="chat-empty-hint">Selecione uma conversa aceita na lista ao lado.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="chat-tab-panel" data-chatpanel="solicitacoes">
+      <h4>Pedidos para te seguir</h4>
+      <div id="chatFollowRequests"></div>
+      <h4 style="margin-top:20px;">Pedidos de conversa</h4>
+      <div id="chatConvRequests"></div>
+    </div>
+
+    <div class="chat-tab-panel" data-chatpanel="perfil-busca">
+      <input type="text" id="chatSearchInput" placeholder="Buscar por @usuario..." style="width:100%;margin-bottom:14px;"/>
+      <div id="chatSearchResults"></div>
+    </div>
+  </div>
+</section>
+    </div>
+
+    <!-- ===== PAINEL: IA TATTOO ===== -->
+    <div class="content-panel" id="panel-projetohub">
+<section id="ia-tattoo" class="theme-deep">
+  <div class="container">
+
+    <div class="section-header fade-in">
+      <span class="eyebrow">Inteligência Artificial · 7 Ferramentas</span>
+      <h2>IA Tattoo</h2>
+      <p>Escolha uma ferramenta e use os botões auxiliares para ir direto para a próxima etapa — do conceito ao stencil sem sair da tela.</p>
+    </div>
+
+    <!-- MENU DE 7 FERRAMENTAS -->
+    <div class="ia-tools-nav fade-in" id="iaToolsNav">
+      <button class="ia-tool-btn active" data-tool="stencil">
+        <svg viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="3" y="3" width="16" height="16" rx="2"/><path d="M7 11h8M11 7v8"/></svg>
+        <span>Stencil</span>
+      </button>
+      <button class="ia-tool-btn" data-tool="estilos">
+        <svg viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.3"><circle cx="11" cy="11" r="8"/><path d="M7 14l2-4 2 3 2-5 2 4"/></svg>
+        <span>Estilos</span>
+      </button>
+      <button class="ia-tool-btn" data-tool="perspectiva">
+        <svg viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M4 18L8 4h10l-4 14H4z"/></svg>
+        <span>Perspectiva</span>
+      </button>
+      <button class="ia-tool-btn" data-tool="gerador">
+        <svg viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M4 17V9l7-5 7 5v8l-7 4-7-4z"/><circle cx="11" cy="11" r="2"/></svg>
+        <span>Texto → Design</span>
+      </button>
+      <button class="ia-tool-btn" data-tool="tryon">
+        <svg viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.3"><circle cx="11" cy="6" r="3"/><path d="M5 20v-5a6 6 0 0112 0v5"/><circle cx="11" cy="13" r="2" stroke-dasharray="2 1"/></svg>
+        <span>Try-on</span>
+      </button>
+      <button class="ia-tool-btn" data-tool="ideias">
+        <svg viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.3"><circle cx="11" cy="9" r="5"/><path d="M9 14v4M13 14v4M8 18h6"/></svg>
+        <span>Ideias</span>
+      </button>
+      <button class="ia-tool-btn" data-tool="export">
+        <svg viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M11 3v11M7 10l4 5 4-5"/><path d="M4 17v2a2 2 0 002 2h10a2 2 0 002-2v-2"/></svg>
+        <span>Export</span>
+      </button>
+    </div>
+
+    <!-- FERRAMENTA 1 — STENCIL (imagem → stencil) -->
+    <div class="ia-tool-panel active" id="tool-stencil">
+      <div class="ia-tool-header">
+        <div>
+          <span class="eyebrow">Ferramenta 01</span>
+          <h3>Upload → Stencil</h3>
+          <p>Envie qualquer imagem e a IA gera um stencil limpo em linha pronto para papel térmico.</p>
+        </div>
+      </div>
+      <div class="decalque-grid">
+        <div class="decalque-info fade-in">
+          <div class="decalque-steps">
+            <div class="decalque-step"><span class="decalque-step-num">01</span><div><h4>Envie a imagem</h4><p>Foto, rascunho, referência ou desenho digital.</p></div></div>
+            <div class="decalque-step"><span class="decalque-step-num">02</span><div><h4>IA processa o contorno</h4><p>Detecção de linhas e ajuste de contraste automático.</p></div></div>
+            <div class="decalque-step"><span class="decalque-step-num">03</span><div><h4>Stencil pronto</h4><p>Arquivo limpo para impressão térmica.</p></div></div>
+          </div>
+        </div>
+        <div class="decalque-tool fade-in fade-in-delay-2">
+          <div class="decalque-upload-box" id="decalqueUploadBox">
+            <input type="file" id="decalqueFileInput" accept="image/*" hidden/>
+            <div class="decalque-upload-empty" id="decalqueEmptyState">
+              <div class="decalque-upload-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M12 16V4M7 9l5-5 5 5"/><path d="M4 16v3a2 2 0 002 2h12a2 2 0 002-2v-3"/></svg>
+              </div>
+              <h4>Arraste uma foto ou clique pra enviar</h4>
+              <p>PNG, JPG — até 10MB</p>
+              <button class="btn btn-primary" id="decalqueSelectBtn" type="button">Selecionar imagem</button>
+            </div>
+            <div class="decalque-preview" id="decalquePreviewState" style="display:none;">
+              <div class="decalque-preview-images">
+                <div class="decalque-preview-col">
+                  <span class="decalque-preview-label">Original</span>
+                  <img id="decalqueOriginalImg" alt="Imagem original"/>
+                </div>
+                <div class="decalque-preview-col">
+                  <span class="decalque-preview-label">Stencil gerado</span>
+                  <div class="decalque-result-wrap">
+                    <img id="decalqueResultImg" alt="Stencil gerado" style="display:none;"/>
+                    <div class="decalque-loading" id="decalqueLoading">
+                      <div class="decalque-spinner"></div>
+                      <span>Gerando stencil...</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="decalque-actions">
+                <button class="btn-ghost btn" id="decalqueResetBtn">← Enviar outra imagem</button>
+                <button class="btn btn-primary" id="decalqueDownloadBtn" style="display:none;">
+                  Baixar stencil
+                  <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 1v8M3 6l4 4 4-4M2 12h10"/></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Botões auxiliares -->
+      <div class="ia-aux-btns">
+        <span class="ia-aux-label">Próximos passos:</span>
+        <button class="ia-aux-btn" data-tool="estilos">Mudar estilo →</button>
+        <button class="ia-aux-btn" data-tool="perspectiva">Ajustar perspectiva →</button>
+        <button class="ia-aux-btn" data-tool="tryon">Ver no corpo →</button>
+        <button class="ia-aux-btn" data-tool="export">Exportar PDF →</button>
+      </div>
+    </div>
+
+    <!-- FERRAMENTA 2 — ESTILOS -->
+    <div class="ia-tool-panel" id="tool-estilos">
+      <div class="ia-tool-header">
+        <div>
+          <span class="eyebrow">Ferramenta 02</span>
+          <h3>Múltiplos Estilos</h3>
+          <p>Escolha o estilo artístico antes de gerar — a IA adapta o traço ao estilo selecionado.</p>
+        </div>
+      </div>
+      <div class="ia-estilos-grid">
+        <button class="ia-estilo-card active" data-estilo="fineline">
+          <div class="ia-estilo-preview fineline-preview"></div>
+          <span>Fine Line</span>
+        </button>
+        <button class="ia-estilo-card" data-estilo="realismo">
+          <div class="ia-estilo-preview realismo-preview"></div>
+          <span>Realismo</span>
+        </button>
+        <button class="ia-estilo-card" data-estilo="blackwork">
+          <div class="ia-estilo-preview blackwork-preview"></div>
+          <span>Blackwork</span>
+        </button>
+        <button class="ia-estilo-card" data-estilo="oldschool">
+          <div class="ia-estilo-preview oldschool-preview"></div>
+          <span>Old School</span>
+        </button>
+        <button class="ia-estilo-card" data-estilo="geometrico">
+          <div class="ia-estilo-preview geo-preview"></div>
+          <span>Geométrico</span>
+        </button>
+        <button class="ia-estilo-card" data-estilo="aquarela">
+          <div class="ia-estilo-preview aquarela-preview"></div>
+          <span>Aquarela</span>
+        </button>
+      </div>
+      <div class="ia-estilo-selected-info">
+        <p id="estiloSelecionadoLabel">Estilo selecionado: <strong>Fine Line</strong> — traços finos, minimalista, sem preenchimento.</p>
+      </div>
+      <!-- Botões auxiliares -->
+      <div class="ia-aux-btns">
+        <span class="ia-aux-label">Próximos passos:</span>
+        <button class="ia-aux-btn" data-tool="stencil">Gerar stencil →</button>
+        <button class="ia-aux-btn" data-tool="gerador">Gerar design por texto →</button>
+        <button class="ia-aux-btn" data-tool="tryon">Ver no corpo →</button>
+      </div>
+    </div>
+
+    <!-- FERRAMENTA 3 — PERSPECTIVA -->
+    <div class="ia-tool-panel" id="tool-perspectiva">
+      <div class="ia-tool-header">
+        <div>
+          <span class="eyebrow">Ferramenta 03</span>
+          <h3>Ajuste de Perspectiva</h3>
+          <p>A IA detecta e corrige automaticamente a rotação e perspectiva da imagem enviada.</p>
+        </div>
+      </div>
+      <div class="decalque-grid">
+        <div class="decalque-info fade-in">
+          <div class="decalque-steps">
+            <div class="decalque-step"><span class="decalque-step-num">01</span><div><h4>Envie a imagem</h4><p>Foto com qualquer ângulo ou rotação.</p></div></div>
+            <div class="decalque-step"><span class="decalque-step-num">02</span><div><h4>IA detecta o ângulo</h4><p>Identifica a inclinação e perspectiva automaticamente.</p></div></div>
+            <div class="decalque-step"><span class="decalque-step-num">03</span><div><h4>Imagem corrigida</h4><p>Pronta para virar stencil ou try-on.</p></div></div>
+          </div>
+        </div>
+        <div class="decalque-tool fade-in fade-in-delay-2">
+          <div class="decalque-upload-box ia-perspectiva-box">
+            <div class="decalque-upload-empty">
+              <div class="decalque-upload-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 7l10 10M17 7l-10 10" stroke-opacity="0.3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/></svg>
+              </div>
+              <h4>Envie imagem para corrigir perspectiva</h4>
+              <p>PNG, JPG — até 10MB</p>
+              <button class="btn btn-primary" type="button" onclick="alert('Em breve — integração de IA real')">Selecionar imagem</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="ia-aux-btns">
+        <span class="ia-aux-label">Próximos passos:</span>
+        <button class="ia-aux-btn" data-tool="stencil">Gerar stencil →</button>
+        <button class="ia-aux-btn" data-tool="tryon">Ver no corpo →</button>
+        <button class="ia-aux-btn" data-tool="export">Exportar →</button>
+      </div>
+    </div>
+
+    <!-- FERRAMENTA 4 — TEXTO → DESIGN -->
+    <div class="ia-tool-panel" id="tool-gerador">
+      <div class="ia-tool-header">
+        <div>
+          <span class="eyebrow">Ferramenta 04</span>
+          <h3>Texto → Design</h3>
+          <p>Descreva a tatuagem em palavras e a IA gera o visual. Quanto mais detalhe, melhor o resultado.</p>
+        </div>
+      </div>
+      <div class="ia-gerador-wrap">
+        <div class="ia-gerador-form">
+          <textarea id="iaGeradorTexto" placeholder="Ex: lobo uivando para a lua com flores de cerejeira ao redor, estilo fine line, traços finos, sem preenchimento..." rows="4"></textarea>
+          <div class="ia-gerador-controls">
+            <select id="iaGeradorEstilo">
+              <option value="fineline">Fine Line</option>
+              <option value="blackwork">Blackwork</option>
+              <option value="realismo">Realismo</option>
+              <option value="oldschool">Old School</option>
+              <option value="geometrico">Geométrico</option>
+            </select>
+            <button class="btn btn-primary" id="iaGeradorBtn" type="button">
+              Gerar design
+              <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 7h12M8 2l5 5-5 5"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="ia-gerador-result" id="iaGeradorResult">
+          <div class="ia-gerador-placeholder">
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1"><rect x="4" y="4" width="40" height="40" rx="4"/><circle cx="17" cy="17" r="5"/><path d="M4 34l12-12 8 8 6-8 14 12"/></svg>
+            <p>O design gerado aparece aqui</p>
+          </div>
+        </div>
+      </div>
+      <div class="ia-aux-btns">
+        <span class="ia-aux-label">Próximos passos:</span>
+        <button class="ia-aux-btn" data-tool="stencil">Converter em stencil →</button>
+        <button class="ia-aux-btn" data-tool="estilos">Mudar estilo →</button>
+        <button class="ia-aux-btn" data-tool="tryon">Ver no corpo →</button>
+        <button class="ia-aux-btn" data-tool="export">Exportar →</button>
+      </div>
+    </div>
+
+    <!-- FERRAMENTA 5 — TRY-ON -->
+    <div class="ia-tool-panel" id="tool-tryon">
+      <div class="ia-tool-header">
+        <div>
+          <span class="eyebrow">Ferramenta 05</span>
+          <h3>Try-on Virtual</h3>
+          <p>Simule como a tatuagem ficaria no corpo. Use a câmera guiada para capturar a parte correta.</p>
+        </div>
+      </div>
+      <div class="ia-tryon-grid">
+        <div class="ia-tryon-col">
+          <h4>1. Selecione a parte do corpo</h4>
+          <div class="ia-body-parts">
+            <button class="ia-body-part active" data-parte="antebraco">Antebraço</button>
+            <button class="ia-body-part" data-parte="braco">Braço</button>
+            <button class="ia-body-part" data-parte="ombro">Ombro</button>
+            <button class="ia-body-part" data-parte="costela">Costela</button>
+            <button class="ia-body-part" data-parte="perna">Perna</button>
+            <button class="ia-body-part" data-parte="costas">Costas</button>
+            <button class="ia-body-part" data-parte="pescoco">Pescoço</button>
+            <button class="ia-body-part" data-parte="tornozelo">Tornozelo</button>
+          </div>
+        </div>
+        <div class="ia-tryon-col">
+          <h4>2. Capture a região</h4>
+          <div class="ia-camera-guide">
+            <div class="ia-camera-frame">
+              <div class="ia-camera-corner tl"></div>
+              <div class="ia-camera-corner tr"></div>
+              <div class="ia-camera-corner bl"></div>
+              <div class="ia-camera-corner br"></div>
+              <p class="ia-camera-hint" id="iaCameraHint">Encaixe o <strong>antebraço</strong> dentro do guia</p>
+            </div>
+            <button class="btn btn-primary" type="button" onclick="alert('Câmera guiada — em breve com integração MediaPipe')">Abrir câmera guiada</button>
+            <p style="font-size:11px;color:var(--text-3);margin-top:8px;">Ou envie uma foto já tirada</p>
+            <button class="btn-ghost btn" type="button" style="font-size:12px;">Enviar foto →</button>
+          </div>
+        </div>
+        <div class="ia-tryon-col">
+          <h4>3. Resultado</h4>
+          <div class="ia-tryon-result">
+            <svg viewBox="0 0 80 80" fill="none" stroke="currentColor" stroke-width="0.8" opacity="0.3"><circle cx="40" cy="40" r="35"/><path d="M25 40a15 15 0 0030 0"/></svg>
+            <p>A prévia aparece aqui após a captura</p>
+          </div>
+        </div>
+      </div>
+      <div class="ia-aux-btns">
+        <span class="ia-aux-label">Próximos passos:</span>
+        <button class="ia-aux-btn" data-tool="stencil">Gerar stencil →</button>
+        <button class="ia-aux-btn" data-tool="estilos">Mudar estilo →</button>
+        <button class="ia-aux-btn" data-tool="export">Exportar imagem →</button>
+      </div>
+    </div>
+
+    <!-- FERRAMENTA 6 — IDEIAS -->
+    <div class="ia-tool-panel" id="tool-ideias">
+      <div class="ia-tool-header">
+        <div>
+          <span class="eyebrow">Ferramenta 06</span>
+          <h3>Gerador de Ideias</h3>
+          <p>Informe tema, estilo e elementos — a IA sugere conceitos variados para você escolher.</p>
+        </div>
+      </div>
+      <div class="ia-ideias-wrap">
+        <div class="ia-ideias-form">
+          <input type="text" id="iaIdeiaTema" placeholder="Tema (ex: natureza, mitologia, animais...)"/>
+          <input type="text" id="iaIdeiaElementos" placeholder="Elementos (ex: lua, flores, espada...)"/>
+          <select id="iaIdeiaEstilo">
+            <option value="">Estilo (opcional)</option>
+            <option value="fineline">Fine Line</option>
+            <option value="blackwork">Blackwork</option>
+            <option value="realismo">Realismo</option>
+            <option value="oldschool">Old School</option>
+          </select>
+          <button class="btn btn-primary" id="iaIdeiaBtn" type="button">
+            Gerar ideias
+            <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 7h12M8 2l5 5-5 5"/></svg>
+          </button>
+        </div>
+        <div class="ia-ideias-result" id="iaIdeiasResult">
+          <div class="ia-gerador-placeholder">
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1"><circle cx="24" cy="18" r="10"/><path d="M18 28v8M30 28v8M16 36h16"/></svg>
+            <p>Suas sugestões de conceito aparecem aqui</p>
+          </div>
+        </div>
+      </div>
+      <div class="ia-aux-btns">
+        <span class="ia-aux-label">Próximos passos:</span>
+        <button class="ia-aux-btn" data-tool="gerador">Gerar design desta ideia →</button>
+        <button class="ia-aux-btn" data-tool="stencil">Converter em stencil →</button>
+        <button class="ia-aux-btn" data-tool="tryon">Ver no corpo →</button>
+      </div>
+    </div>
+
+    <!-- FERRAMENTA 7 — EXPORT -->
+    <div class="ia-tool-panel" id="tool-export">
+      <div class="ia-tool-header">
+        <div>
+          <span class="eyebrow">Ferramenta 07</span>
+          <h3>Exportar</h3>
+          <p>Baixe o stencil ou design final em alta resolução, pronto para impressão ou uso digital.</p>
+        </div>
+      </div>
+      <div class="ia-export-grid">
+        <div class="ia-export-card">
+          <div class="ia-export-icon">
+            <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="4" y="2" width="24" height="28" rx="2"/><path d="M8 8h16M8 12h16M8 16h10"/><path d="M16 22v6M12 25l4 4 4-4"/></svg>
+          </div>
+          <h4>PDF para impressão</h4>
+          <p>Alta resolução 300dpi, pronto para impressora térmica de stencil.</p>
+          <button class="btn btn-primary" type="button" onclick="alert('Exporte um stencil gerado primeiro')">Baixar PDF</button>
+        </div>
+        <div class="ia-export-card">
+          <div class="ia-export-icon">
+            <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3" y="3" width="26" height="26" rx="2"/><circle cx="11" cy="11" r="3"/><path d="M3 22l8-8 6 6 5-6 7 8"/></svg>
+          </div>
+          <h4>PNG alta resolução</h4>
+          <p>Imagem transparente em 4K para uso no Procreate ou outras ferramentas digitais.</p>
+          <button class="btn-ghost btn" type="button" onclick="alert('Exporte um stencil gerado primeiro')">Baixar PNG →</button>
+        </div>
+        <div class="ia-export-card">
+          <div class="ia-export-icon">
+            <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M16 4l8 5v10l-8 5-8-5V9z"/><path d="M16 4v20M4 9l12 6 12-6"/></svg>
+          </div>
+          <h4>Try-on com tattoo</h4>
+          <p>Foto do corpo com a tatuagem sobreposta — ideal para mostrar ao cliente.</p>
+          <button class="btn-ghost btn" type="button" onclick="alert('Faça o try-on primeiro')">Baixar imagem →</button>
+        </div>
+      </div>
+      <div class="ia-aux-btns">
+        <span class="ia-aux-label">Voltar para:</span>
+        <button class="ia-aux-btn" data-tool="stencil">← Stencil</button>
+        <button class="ia-aux-btn" data-tool="tryon">← Try-on</button>
+        <button class="ia-aux-btn" data-tool="gerador">← Gerador de design</button>
+      </div>
+    </div>
+
+    <p class="decalque-disclaimer fade-in" style="margin-top:2rem;">* Ferramentas em fase de testes. Integração com IA real em breve. Disponível para assinantes Pro e Premium.</p>
+
+  </div>
+</section>
+    </div>
+
+    <!-- ===== PAINEL: PRODUTOS ===== -->
+    <div class="content-panel" id="panel-produtoshub">
+<section id="materiais" class="theme-light">
+  <div class="container">
+    <div class="section-header fade-in">
+      <span class="eyebrow">Biblioteca Magnum</span>
+      <h2>Sua biblioteca de conhecimento.</h2>
+      <p>Compre direto aqui, sem intermediário — sem Hotmart, sem Amazon. Escolha um tema específico ou pegue uma apostila completa. Pagamento seguro, acesso liberado na hora.</p>
+    </div>
+
+    <div class="materiais-filtros fade-in">
+      <span class="filtro-pill active">Todos</span>
+      <span class="filtro-pill">Gratuitos</span>
+      <span class="filtro-pill">Ebooks</span>
+      <span class="filtro-pill">Apostilas completas</span>
+      <span class="filtro-pill">Ofício</span>
+      <span class="filtro-pill">Segurança</span>
+      <span class="filtro-pill">Técnica</span>
+    </div>
+
+    <div class="ebooks-grid" id="ebooksGrid">
+
+      <div class="ebook-card fade-in" data-cat="ofício" data-free="true">
+        <div class="ebook-cover">
+          <span class="ebook-price-badge free">Grátis</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M4 4h11a3 3 0 013 3v13H7a3 3 0 01-3-3V4z"/><path d="M4 4a3 3 0 013-3h11"/></svg>
+        </div>
+        <div class="ebook-body">
+          <span class="ebook-cat">Ofício</span>
+          <h4>Guia de Entrada na Tatuagem</h4>
+          <p>O que esperar do mercado, da rotina e da carreira antes de começar.</p>
+          <div class="ebook-footer">
+            <span class="ebook-price free-text">Gratuito</span>
+            <button class="btn-ghost btn btn-download" style="padding:0;" data-title="Guia de Entrada na Tatuagem">Baixar →</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="ebook-card fade-in fade-in-delay-1" data-cat="segurança" data-free="true">
+        <div class="ebook-cover">
+          <span class="ebook-price-badge free">Grátis</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="12" cy="12" r="9"/><path d="M8 12l2.5 2.5L16 9"/></svg>
+        </div>
+        <div class="ebook-body">
+          <span class="ebook-cat">Segurança</span>
+          <h4>Biossegurança Essencial</h4>
+          <p>Assepsia, EPI e descarte de material — o básico que ninguém pode pular.</p>
+          <div class="ebook-footer">
+            <span class="ebook-price free-text">Gratuito</span>
+            <button class="btn-ghost btn btn-download" style="padding:0;" data-title="Biossegurança Essencial">Baixar →</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="ebook-card fade-in fade-in-delay-2" data-cat="técnica" data-free="true">
+        <div class="ebook-cover">
+          <span class="ebook-price-badge free">Grátis</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M3 17l6-6 4 4 8-8"/></svg>
+        </div>
+        <div class="ebook-body">
+          <span class="ebook-cat">Técnica</span>
+          <h4>Fundamentos do Traço</h4>
+          <p>Linha, pressão e profundidade — a base de toda boa tatuagem.</p>
+          <div class="ebook-footer">
+            <span class="ebook-price free-text">Gratuito</span>
+            <button class="btn-ghost btn btn-download" style="padding:0;" data-title="Fundamentos do Traço">Baixar →</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="ebook-card fade-in" data-cat="ofício">
+        <div class="ebook-cover">
+          <span class="ebook-price-badge">R$ 19</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3" y="2" width="14" height="20" rx="2"/><line x1="7" y1="7" x2="13" y2="7"/><line x1="7" y1="11" x2="13" y2="11"/></svg>
+        </div>
+        <div class="ebook-body">
+          <span class="ebook-cat">Ofício</span>
+          <h4>Alvará & Vigilância Sanitária</h4>
+          <p>Passo a passo prático pra regularizar seu espaço de trabalho.</p>
+          <div class="ebook-footer">
+            <span class="ebook-price">R$ 19</span>
+            <button class="btn-ghost btn btn-buy" style="padding:0;" data-title="Alvará & Vigilância Sanitária" data-price="19">Comprar →</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="ebook-card fade-in fade-in-delay-1" data-cat="ofício">
+        <div class="ebook-cover">
+          <span class="ebook-price-badge">R$ 24</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M12 2v20M2 12h20" stroke-width="0.8"/><circle cx="12" cy="12" r="8"/></svg>
+        </div>
+        <div class="ebook-body">
+          <span class="ebook-cat">Ofício</span>
+          <h4>MEI para Tatuadores</h4>
+          <p>Como formalizar, emitir nota e organizar suas finanças desde o início.</p>
+          <div class="ebook-footer">
+            <span class="ebook-price">R$ 24</span>
+            <button class="btn-ghost btn btn-buy" style="padding:0;" data-title="MEI para Tatuadores" data-price="24">Comprar →</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="ebook-card fade-in fade-in-delay-2" data-cat="ofício">
+        <div class="ebook-cover">
+          <span class="ebook-price-badge">R$ 21</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M4 17V7l8-4 8 4v10l-8 4-8-4z"/><path d="M4 7l8 4 8-4M12 11v10"/></svg>
+        </div>
+        <div class="ebook-body">
+          <span class="ebook-cat">Ofício</span>
+          <h4>Contrato com Cliente</h4>
+          <p>Modelos prontos de termo de consentimento e responsabilidade civil.</p>
+          <div class="ebook-footer">
+            <span class="ebook-price">R$ 21</span>
+            <button class="btn-ghost btn btn-buy" style="padding:0;" data-title="Contrato com Cliente" data-price="21">Comprar →</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="ebook-card fade-in" data-cat="segurança">
+        <div class="ebook-cover">
+          <span class="ebook-price-badge">R$ 29</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M6 3v18M6 3h11l-2 4 2 4H6"/></svg>
+        </div>
+        <div class="ebook-body">
+          <span class="ebook-cat">Segurança</span>
+          <h4>Esterilização na Prática</h4>
+          <p>Protocolos, autoclave e rotina de limpeza explicados passo a passo.</p>
+          <div class="ebook-footer">
+            <span class="ebook-price">R$ 29</span>
+            <button class="btn-ghost btn btn-buy" style="padding:0;" data-title="Esterilização na Prática" data-price="29">Comprar →</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="ebook-card fade-in fade-in-delay-1" data-cat="segurança">
+        <div class="ebook-cover">
+          <span class="ebook-price-badge">R$ 22</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
+        </div>
+        <div class="ebook-body">
+          <span class="ebook-cat">Segurança</span>
+          <h4>Comparativo de Máquinas</h4>
+          <p>Rotativa x bobina, marcas e o que vale o investimento pra cada fase.</p>
+          <div class="ebook-footer">
+            <span class="ebook-price">R$ 22</span>
+            <button class="btn-ghost btn btn-buy" style="padding:0;" data-title="Comparativo de Máquinas" data-price="22">Comprar →</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="ebook-card fade-in fade-in-delay-2" data-cat="segurança">
+        <div class="ebook-cover">
+          <span class="ebook-price-badge">R$ 18</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M12 2l8 4v6c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6l8-4z"/></svg>
+        </div>
+        <div class="ebook-body">
+          <span class="ebook-cat">Segurança</span>
+          <h4>Tintas: O Que Tá Por Dentro</h4>
+          <p>Composição, procedência e como identificar tinta de qualidade.</p>
+          <div class="ebook-footer">
+            <span class="ebook-price">R$ 18</span>
+            <button class="btn-ghost btn btn-buy" style="padding:0;" data-title="Tintas: O Que Tá Por Dentro" data-price="18">Comprar →</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="ebook-card fade-in" data-cat="técnica">
+        <div class="ebook-cover">
+          <span class="ebook-price-badge">R$ 27</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.5 4.5l2 2M17.5 17.5l2 2M4.5 19.5l2-2M17.5 6.5l2-2"/></svg>
+        </div>
+        <div class="ebook-body">
+          <span class="ebook-cat">Técnica</span>
+          <h4>IA Aplicada à Criação</h4>
+          <p>Como usar inteligência artificial pra gerar referências e testar composições.</p>
+          <div class="ebook-footer">
+            <span class="ebook-price">R$ 27</span>
+            <button class="btn-ghost btn btn-buy" style="padding:0;" data-title="IA Aplicada à Criação" data-price="27">Comprar →</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="ebook-card fade-in fade-in-delay-1" data-cat="técnica">
+        <div class="ebook-cover">
+          <span class="ebook-price-badge">R$ 25</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M4 20l5-12 4 8 3-6 4 10"/></svg>
+        </div>
+        <div class="ebook-body">
+          <span class="ebook-cat">Técnica</span>
+          <h4>Sombreado do Zero</h4>
+          <p>Camadas, degradê e profundidade — guia visual passo a passo.</p>
+          <div class="ebook-footer">
+            <span class="ebook-price">R$ 25</span>
+            <button class="btn-ghost btn btn-buy" style="padding:0;" data-title="Sombreado do Zero" data-price="25">Comprar →</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="ebook-card fade-in fade-in-delay-2" data-cat="técnica">
+        <div class="ebook-cover">
+          <span class="ebook-price-badge">R$ 23</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M12 21s-7-4.5-7-10a4 4 0 017-3 4 4 0 017 3c0 5.5-7 10-7 10z"/></svg>
+        </div>
+        <div class="ebook-body">
+          <span class="ebook-cat">Técnica</span>
+          <h4>Cicatrização: Guia do Pós</h4>
+          <p>O que orientar o cliente pra garantir o resultado final da tatuagem.</p>
+          <div class="ebook-footer">
+            <span class="ebook-price">R$ 23</span>
+            <button class="btn-ghost btn btn-buy" style="padding:0;" data-title="Cicatrização: Guia do Pós" data-price="23">Comprar →</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="ebook-card destaque fade-in fade-in-delay-2" data-cat="técnica">
+        <div class="ebook-cover">
+          <span class="ebook-price-badge premium">Apostila completa</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3" y="2" width="14" height="20" rx="2"/><line x1="7" y1="6" x2="13" y2="6"/><line x1="7" y1="10" x2="13" y2="10"/><line x1="7" y1="14" x2="11" y2="14"/></svg>
+        </div>
+        <div class="ebook-body">
+          <span class="ebook-cat">Técnica · Edição completa</span>
+          <h4>Método Magnum — Técnica Completa</h4>
+          <p>Tudo sobre desenho, transferência, sombreado, cicatrização e revisão. A apostila definitiva da trilha.</p>
+          <div class="ebook-footer">
+            <span class="ebook-price">R$ 149</span>
+            <button class="btn-ghost btn btn-buy" style="padding:0;" data-title="Método Magnum — Técnica Completa" data-price="149">Saiba mais →</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="ebook-card destaque fade-in" data-cat="ofício">
+        <div class="ebook-cover">
+          <span class="ebook-price-badge premium">Apostila completa</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M12 2L3 7v10l9 5 9-5V7l-9-5z"/><path d="M3 7l9 5 9-5M12 12v10"/></svg>
+        </div>
+        <div class="ebook-body">
+          <span class="ebook-cat">Ofício & Jurídico · Edição completa</span>
+          <h4>Método Magnum — Carreira & Legal</h4>
+          <p>O guia definitivo pra abrir seu espaço com tudo em dia: jurídico, MEI, contratos e gestão.</p>
+          <div class="ebook-footer">
+            <span class="ebook-price">R$ 129</span>
+            <button class="btn-ghost btn btn-buy" style="padding:0;" data-title="Método Magnum — Carreira & Legal" data-price="129">Saiba mais →</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="biblioteca-more fade-in">
+      <p>+ novos títulos adicionados todo mês. Esta é a posição reservada pra expandir a biblioteca.</p>
+    </div>
+  </div>
+</section>
+
+<section id="avaliacoes" class="theme-light">
+  <div class="container">
+    <div class="section-header fade-in">
+      <span class="eyebrow">Avaliações da Comunidade</span>
+      <h2>O que os tatuadores realmente usam.</h2>
+      <p>Equipamentos avaliados por quem usa no dia a dia. Filtre por categoria e veja os mais bem votados.</p>
+    </div>
+
+    <div class="materiais-filtros fade-in">
+      <span class="filtro-pill-avaliacao active">Todos</span>
+      <span class="filtro-pill-avaliacao">Máquinas</span>
+      <span class="filtro-pill-avaliacao">Impressoras</span>
+      <span class="filtro-pill-avaliacao">Cartuchos</span>
+      <span class="filtro-pill-avaliacao">Transfer</span>
+      <span class="filtro-pill-avaliacao">Tintas</span>
+    </div>
+
+    <div class="avaliacoes-grid" id="avaliacoesGrid">
+
+      <div class="avaliacao-card fade-in" data-cat="máquinas">
+        <div class="avaliacao-rank">Mais votada</div>
+        <div class="avaliacao-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="4" y="9" width="16" height="7" rx="2"/><path d="M8 9V6a2 2 0 012-2h4a2 2 0 012 2v3"/><line x1="9" y1="19" x2="15" y2="19"/></svg>
+        </div>
+        <span class="ebook-cat">Máquinas</span>
+        <h4>Rotativa Pulse X3</h4>
+        <div class="avaliacao-stars">★★★★★ <span>4.9</span></div>
+        <p class="avaliacao-count">312 avaliações</p>
+      </div>
+
+      <div class="avaliacao-card fade-in fade-in-delay-1" data-cat="máquinas">
+        <div class="avaliacao-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="4" y="9" width="16" height="7" rx="2"/><path d="M8 9V6a2 2 0 012-2h4a2 2 0 012 2v3"/><line x1="9" y1="19" x2="15" y2="19"/></svg>
+        </div>
+        <span class="ebook-cat">Máquinas</span>
+        <h4>Bobina Classic Pro</h4>
+        <div class="avaliacao-stars">★★★★☆ <span>4.3</span></div>
+        <p class="avaliacao-count">187 avaliações</p>
+      </div>
+
+      <div class="avaliacao-card fade-in fade-in-delay-2" data-cat="máquinas">
+        <div class="avaliacao-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="4" y="9" width="16" height="7" rx="2"/><path d="M8 9V6a2 2 0 012-2h4a2 2 0 012 2v3"/><line x1="9" y1="19" x2="15" y2="19"/></svg>
+        </div>
+        <span class="ebook-cat">Máquinas</span>
+        <h4>Wireless Atom V2</h4>
+        <div class="avaliacao-stars">★★★★☆ <span>4.1</span></div>
+        <p class="avaliacao-count">98 avaliações</p>
+      </div>
+
+      <div class="avaliacao-card fade-in" data-cat="impressoras">
+        <div class="avaliacao-rank">Mais votada</div>
+        <div class="avaliacao-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="3" y="7" width="18" height="9" rx="1"/><path d="M7 7V4h10v3"/><rect x="7" y="16" width="10" height="4"/></svg>
+        </div>
+        <span class="ebook-cat">Impressoras</span>
+        <h4>Stencil Print T200</h4>
+        <div class="avaliacao-stars">★★★★★ <span>4.8</span></div>
+        <p class="avaliacao-count">154 avaliações</p>
+      </div>
+
+      <div class="avaliacao-card fade-in fade-in-delay-1" data-cat="impressoras">
+        <div class="avaliacao-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="3" y="7" width="18" height="9" rx="1"/><path d="M7 7V4h10v3"/><rect x="7" y="16" width="10" height="4"/></svg>
+        </div>
+        <span class="ebook-cat">Impressoras</span>
+        <h4>InkJet Therm Compact</h4>
+        <div class="avaliacao-stars">★★★★☆ <span>4.0</span></div>
+        <p class="avaliacao-count">61 avaliações</p>
+      </div>
+
+      <div class="avaliacao-card fade-in fade-in-delay-2" data-cat="cartuchos">
+        <div class="avaliacao-rank">Mais votada</div>
+        <div class="avaliacao-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M12 2v6M12 8l4 3v9a2 2 0 01-2 2h-4a2 2 0 01-2-2v-9l4-3z"/></svg>
+        </div>
+        <span class="ebook-cat">Cartuchos</span>
+        <h4>RL Precision 0.30mm</h4>
+        <div class="avaliacao-stars">★★★★★ <span>4.7</span></div>
+        <p class="avaliacao-count">203 avaliações</p>
+      </div>
+
+      <div class="avaliacao-card fade-in" data-cat="cartuchos">
+        <div class="avaliacao-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M12 2v6M12 8l4 3v9a2 2 0 01-2 2h-4a2 2 0 01-2-2v-9l4-3z"/></svg>
+        </div>
+        <span class="ebook-cat">Cartuchos</span>
+        <h4>MG Soft Shader 0.35mm</h4>
+        <div class="avaliacao-stars">★★★★☆ <span>4.2</span></div>
+        <p class="avaliacao-count">76 avaliações</p>
+      </div>
+
+      <div class="avaliacao-card fade-in fade-in-delay-1" data-cat="transfer">
+        <div class="avaliacao-rank">Mais votada</div>
+        <div class="avaliacao-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 3v18"/></svg>
+        </div>
+        <span class="ebook-cat">Transfer</span>
+        <h4>ThermoCopy Sensitive</h4>
+        <div class="avaliacao-stars">★★★★★ <span>4.6</span></div>
+        <p class="avaliacao-count">142 avaliações</p>
+      </div>
+
+      <div class="avaliacao-card fade-in fade-in-delay-2" data-cat="transfer">
+        <div class="avaliacao-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 3v18"/></svg>
+        </div>
+        <span class="ebook-cat">Transfer</span>
+        <h4>EasyStencil Roll</h4>
+        <div class="avaliacao-stars">★★★★☆ <span>3.9</span></div>
+        <p class="avaliacao-count">54 avaliações</p>
+      </div>
+
+      <div class="avaliacao-card fade-in" data-cat="tintas">
+        <div class="avaliacao-rank">Mais votada</div>
+        <div class="avaliacao-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M12 2l8 4v6c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6l8-4z"/></svg>
+        </div>
+        <span class="ebook-cat">Tintas</span>
+        <h4>Pigment Black Deep</h4>
+        <div class="avaliacao-stars">★★★★★ <span>4.9</span></div>
+        <p class="avaliacao-count">288 avaliações</p>
+      </div>
+
+      <div class="avaliacao-card fade-in fade-in-delay-1" data-cat="tintas">
+        <div class="avaliacao-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M12 2l8 4v6c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6l8-4z"/></svg>
+        </div>
+        <span class="ebook-cat">Tintas</span>
+        <h4>Color Vivid Set 12</h4>
+        <div class="avaliacao-stars">★★★★☆ <span>4.4</span></div>
+        <p class="avaliacao-count">119 avaliações</p>
+      </div>
+
+      <div class="avaliacao-card fade-in fade-in-delay-2" data-cat="tintas">
+        <div class="avaliacao-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M12 2l8 4v6c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6l8-4z"/></svg>
+        </div>
+        <span class="ebook-cat">Tintas</span>
+        <h4>Organic Pure Line</h4>
+        <div class="avaliacao-stars">★★★★☆ <span>4.1</span></div>
+        <p class="avaliacao-count">67 avaliações</p>
+      </div>
+
+    </div>
+
+    <div class="biblioteca-more fade-in">
+      <p>Avalie os equipamentos que você usa e ajude outros tatuadores a escolher melhor.</p>
+    </div>
+  </div>
+</section>
+    </div>
+
+        <!-- ===== PAINEL: ARENA ===== -->
+    <div class="content-panel" id="panel-arena">
+<section id="arena" style="background:#0D0F1A;min-height:100vh;padding-bottom:80px;color:#F2F4FC;">
+  <div class="container">
+
+    <!-- HERO CARD DA ARENA -->
+    <div class="arena-hero-card fade-in">
+      <div class="arena-hero-left">
+        <div class="arena-status-dot"></div>
+        <div>
+          <span class="arena-hero-eyebrow">Sprint Semanal · Realismo</span>
+          <h2 class="arena-hero-title">Arena <span>Elite</span></h2>
+          <p class="arena-hero-sub">Personal Trainer do Tatuador — evolução técnica real.</p>
+        </div>
+      </div>
+      <div class="arena-hero-right">
+        <div class="arena-countdown-wrap">
+          <span class="arena-countdown-label">Próximo treino coletivo em</span>
+          <div class="arena-countdown" id="arenaCountdown">
+            <div><span id="acdH">02</span><small>h</small></div>
+            <div class="arena-cd-sep">:</div>
+            <div><span id="acdM">34</span><small>m</small></div>
+            <div class="arena-cd-sep">:</div>
+            <div><span id="acdS">18</span><small>s</small></div>
+          </div>
+        </div>
+        <div class="arena-sprint-progress">
+          <span class="arena-sprint-label">Sprint atual <strong>7h / 10h</strong></span>
+          <div class="arena-sprint-bar"><div class="arena-sprint-fill" style="width:70%"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TABS INTERNAS -->
+    <div class="arena-tabs-nav fade-in" id="arenaTabsNav">
+      <button class="arena-tab-btn active" data-arena="dashboard">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="7" height="7" rx="1.5"/><rect x="11" y="2" width="7" height="7" rx="1.5"/><rect x="2" y="11" width="7" height="7" rx="1.5"/><rect x="11" y="11" width="7" height="7" rx="1.5"/></svg>
+        Dashboard
+      </button>
+      <button class="arena-tab-btn" data-arena="labs">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 2v8l-3 6h12l-3-6V2"/><path d="M5 2h10"/></svg>
+        Laboratórios
+      </button>
+      <button class="arena-tab-btn" data-arena="salas">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="7" cy="8" r="3"/><circle cx="14" cy="8" r="3"/><path d="M1 18c0-3 2.5-5 6-5s6 2 6 5"/><path d="M13 13c2 0 5 1 5 5"/></svg>
+        Salas de Estudo
+      </button>
+      <button class="arena-tab-btn" data-arena="ranking">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 18V11M10 18V4M16 18v-7"/></svg>
+        Ranking
+      </button>
+      <button class="arena-tab-btn" data-arena="competicoes">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 2l2.4 4.9 5.4.8-3.9 3.8.9 5.4L10 14.4l-4.8 2.5.9-5.4L2.2 7.7l5.4-.8z"/></svg>
+        Competições
+      </button>
+    </div>
+
+    <!-- ═══ TAB: DASHBOARD ═══ -->
+    <div class="arena-tab-panel active" id="arena-dashboard">
+
+      <div class="arena-dash-grid">
+
+        <!-- Card: Sua trilha ativa -->
+        <div class="arena-dash-card arena-card-trilha">
+          <div class="arena-dash-card-head">
+            <span class="arena-dash-eyebrow">Trilha Ativa</span>
+            <span class="arena-badge arena-badge-green">Em progresso</span>
+          </div>
+          <h4>Realismo · Nível 2</h4>
+          <p>Foco atual: sombra suave e degradê</p>
+          <div class="arena-prog-wrap">
+            <div class="arena-prog-bar" style="--prog:68%"></div>
+            <span>68% concluído</span>
+          </div>
+          <div class="arena-dash-pills">
+            <span>Drawing Lab</span><span>Artificial Lab</span><span>Skin Lab</span>
+          </div>
+        </div>
+
+        <!-- Card: Nota técnica -->
+        <div class="arena-dash-card arena-card-nota">
+          <div class="arena-dash-card-head">
+            <span class="arena-dash-eyebrow">Nota Técnica IA</span>
+            <span class="arena-badge arena-badge-purple">Verificada</span>
+          </div>
+          <div class="arena-nota-display">
+            <span class="arena-nota-num">8.7</span>
+            <div class="arena-nota-bars">
+              <div><span>Traço</span><div class="arena-prog-bar" style="--prog:90%"></div></div>
+              <div><span>Saturação</span><div class="arena-prog-bar" style="--prog:82%"></div></div>
+              <div><span>Contraste</span><div class="arena-prog-bar" style="--prog:78%"></div></div>
+              <div><span>Composição</span><div class="arena-prog-bar" style="--prog:88%"></div></div>
+            </div>
+          </div>
+          <button class="arena-btn-ghost" data-arena="labs">Refazer exercício →</button>
+        </div>
+
+        <!-- Card: Status ranking -->
+        <div class="arena-dash-card arena-card-rank">
+          <div class="arena-dash-card-head">
+            <span class="arena-dash-eyebrow">Ranking Global</span>
+            <span class="arena-badge arena-badge-gold">↑ Elite</span>
+          </div>
+          <div class="arena-rank-mini">
+            <span class="arena-rank-pos-big">#47</span>
+            <div>
+              <p>↑ 5 posições essa semana</p>
+              <p>1.840 pts acumulados</p>
+              <p>Selo: <strong>Artista Técnico</strong></p>
+            </div>
+          </div>
+          <button class="arena-btn-ghost" data-arena="ranking">Ver ranking completo →</button>
+        </div>
+
+        <!-- Card: Próxima sprint -->
+        <div class="arena-dash-card arena-card-sprint">
+          <div class="arena-dash-card-head">
+            <span class="arena-dash-eyebrow">Sprint da Semana</span>
+            <span class="arena-badge arena-badge-orange">3 dias restantes</span>
+          </div>
+          <h4>10h de sombra em pele artificial</h4>
+          <div class="arena-prog-wrap">
+            <div class="arena-prog-bar" style="--prog:70%"></div>
+            <span>7h concluídas</span>
+          </div>
+          <p style="font-size:12px;color:#8A90AC;margin-top:8px;">Complete a sprint para ganhar +200 pts e subir uma posição no ranking.</p>
+          <button class="arena-btn-primary" data-arena="labs">Registrar treino agora</button>
+        </div>
+
+      </div>
+
+      <!-- Atividade recente -->
+      <div class="arena-recent">
+        <h4 class="arena-section-title">Atividade Recente</h4>
+        <div class="arena-recent-list">
+          <div class="arena-recent-item">
+            <div class="arena-recent-icon arena-icon-lab">
+              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 2v8l-3 6h12l-3-6V2"/></svg>
+            </div>
+            <div><strong>Artificial Lab</strong> · Realismo · Nota 9.1</div>
+            <span class="arena-recent-time">há 2h</span>
+          </div>
+          <div class="arena-recent-item">
+            <div class="arena-recent-icon arena-icon-sala">
+              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="7" cy="8" r="3"/><circle cx="14" cy="8" r="3"/></svg>
+            </div>
+            <div><strong>Sala de Estudo</strong> · Dupla com @lucas_art · 2h de treino</div>
+            <span class="arena-recent-time">ontem</span>
+          </div>
+          <div class="arena-recent-item">
+            <div class="arena-recent-icon arena-icon-comp">
+              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 2l2.4 4.9 5.4.8-3.9 3.8.9 5.4L10 14.4l-4.8 2.5.9-5.4L2.2 7.7z"/></svg>
+            </div>
+            <div><strong>Competição</strong> · Copa Realismo · Venceu oitavas</div>
+            <span class="arena-recent-time">3 dias atrás</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ═══ TAB: LABORATÓRIOS ═══ -->
+    <div class="arena-tab-panel" id="arena-labs">
+
+      <!-- Seletor de Lab -->
+      <div class="arena-labs-nav">
+        <button class="arena-lab-btn active" data-lab="drawing">✏️ Drawing Lab</button>
+        <button class="arena-lab-btn" data-lab="artificial">🧪 Artificial Lab</button>
+        <button class="arena-lab-btn" data-lab="skin">🩺 Skin Lab</button>
+      </div>
+
+      <!-- DRAWING LAB -->
+      <div class="arena-lab-panel active" id="lab-drawing">
+        <div class="arena-lab-header">
+          <h3>Drawing Lab</h3>
+          <p>Foco em anatomia, composição e referência. A IA gera o desafio, você desenha, envia e recebe nota.</p>
+        </div>
+        <div class="arena-lab-grid">
+          <div class="arena-lab-col">
+            <h5>1. Escolha o estilo</h5>
+            <div class="arena-estilo-pills">
+              <button class="arena-estilo-pill active" data-estilo="realismo">Realismo</button>
+              <button class="arena-estilo-pill" data-estilo="fineline">Fine Line</button>
+              <button class="arena-estilo-pill" data-estilo="blackwork">Blackwork</button>
+              <button class="arena-estilo-pill" data-estilo="oldschool">Old School</button>
+              <button class="arena-estilo-pill" data-estilo="pontilhismo">Pontilhismo</button>
+              <button class="arena-estilo-pill" data-estilo="aquarela">Aquarela</button>
+            </div>
+            <h5 style="margin-top:16px;">2. Nível do desafio</h5>
+            <div class="arena-estilo-pills">
+              <button class="arena-estilo-pill active" data-nivel="iniciante">Iniciante</button>
+              <button class="arena-estilo-pill" data-nivel="intermediario">Intermediário</button>
+              <button class="arena-estilo-pill" data-nivel="avancado">Avançado</button>
+            </div>
+            <button class="arena-btn-primary" id="arenaGerarDrawingBtn" style="margin-top:20px;width:100%;">
+              Gerar desafio de desenho
+            </button>
+          </div>
+          <div class="arena-lab-col">
+            <h5>3. Referência gerada</h5>
+            <div class="arena-lab-result" id="drawingResult">
+              <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="0.8" opacity="0.3"><rect x="4" y="4" width="40" height="40" rx="4"/><circle cx="17" cy="17" r="5"/><path d="M4 34l12-12 8 8 6-8 14 12"/></svg>
+              <p>Gere um desafio para ver a referência</p>
+            </div>
+          </div>
+          <div class="arena-lab-col">
+            <h5>4. Envie seu desenho</h5>
+            <div class="arena-upload-box" id="drawingUpload">
+              <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.2" opacity="0.4"><path d="M16 20V8M11 13l5-5 5 5"/><path d="M6 20v3a3 3 0 003 3h14a3 3 0 003-3v-3"/></svg>
+              <p>Foto do seu desenho</p>
+              <button class="arena-btn-ghost" onclick="alert('Gere um desafio primeiro')">Selecionar</button>
+            </div>
+            <div class="arena-feedback-preview" id="drawingFeedback" style="display:none;">
+              <div class="arena-feedback-nota"><span id="drawingNota">—</span><small>/10</small></div>
+              <p id="drawingFeedbackText">Enviando para avaliação...</p>
+              <button class="arena-btn-ghost">Refazer exercício</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ARTIFICIAL LAB -->
+      <div class="arena-lab-panel" id="lab-artificial">
+        <div class="arena-lab-header">
+          <h3>Artificial Lab</h3>
+          <p>Treino em pele artificial — máquina, traço e profundidade. Receba o decalque pronto e pratique.</p>
+        </div>
+        <div class="arena-lab-grid">
+          <div class="arena-lab-col">
+            <h5>1. Selecione o estilo e parte do corpo</h5>
+            <div class="arena-estilo-pills">
+              <button class="arena-estilo-pill active">Realismo</button>
+              <button class="arena-estilo-pill">Blackwork</button>
+              <button class="arena-estilo-pill">Old School</button>
+              <button class="arena-estilo-pill">Fine Line</button>
+            </div>
+            <div class="arena-estilo-pills" style="margin-top:10px;">
+              <button class="arena-estilo-pill active">Antebraço</button>
+              <button class="arena-estilo-pill">Braço</button>
+              <button class="arena-estilo-pill">Costela</button>
+              <button class="arena-estilo-pill">Perna</button>
+            </div>
+            <button class="arena-btn-primary" style="margin-top:20px;width:100%;" id="arenaGerarArtificialBtn">
+              Gerar decalque de treino
+            </button>
+            <div class="arena-pele-btns">
+              <h5 style="margin-top:18px;">Pele artificial</h5>
+              <button class="arena-btn-ghost" onclick="alert('Loja em breve')">🛒 Comprar pele artificial</button>
+              <button class="arena-btn-ghost" onclick="alert('Tutorial em breve')">🎬 Tutorial: fazer artesanal</button>
+            </div>
+          </div>
+          <div class="arena-lab-col">
+            <h5>2. Decalque gerado</h5>
+            <div class="arena-lab-result" id="artificialResult">
+              <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="0.8" opacity="0.3"><rect x="4" y="4" width="40" height="40" rx="4"/><circle cx="17" cy="17" r="5"/><path d="M4 34l12-12 8 8 6-8 14 12"/></svg>
+              <p>Decalque aparece aqui</p>
+            </div>
+            <button class="arena-btn-ghost" id="artificialDownloadBtn" style="display:none;margin-top:10px;">
+              ⬇ Baixar decalque PDF
+            </button>
+          </div>
+          <div class="arena-lab-col">
+            <h5>3. Envie o resultado</h5>
+            <div class="arena-upload-box">
+              <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.2" opacity="0.4"><path d="M16 20V8M11 13l5-5 5 5"/><path d="M6 20v3a3 3 0 003 3h14a3 3 0 003-3v-3"/></svg>
+              <p>Foto da tattoo na pele artificial</p>
+              <button class="arena-btn-ghost" onclick="alert('Gere o decalque primeiro')">Enviar foto</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SKIN LAB -->
+      <div class="arena-lab-panel" id="lab-skin">
+        <div class="arena-lab-header">
+          <h3>Skin Lab</h3>
+          <p>Validação de trabalhos reais. Envie fotos de tattoos executadas e receba avaliação técnica da IA.</p>
+        </div>
+        <div class="arena-lab-grid">
+          <div class="arena-lab-col">
+            <h5>Registre um trabalho real</h5>
+            <p style="font-size:13px;color:#8A90AC;line-height:1.6;">Ao encerrar um atendimento no My Studio, clique em "Registrar Evolução" para que o trabalho entre automaticamente aqui para avaliação.</p>
+            <button class="arena-btn-primary" style="margin-top:16px;width:100%;" onclick="alert('Faça login no My Studio e registre um atendimento')">Registrar trabalho realizado</button>
+          </div>
+          <div class="arena-lab-col">
+            <h5>Upload manual</h5>
+            <div class="arena-upload-box">
+              <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.2" opacity="0.4"><path d="M16 20V8M11 13l5-5 5 5"/><path d="M6 20v3a3 3 0 003 3h14a3 3 0 003-3v-3"/></svg>
+              <p>Foto da tatuagem finalizada</p>
+              <button class="arena-btn-ghost">Selecionar foto</button>
+            </div>
+          </div>
+          <div class="arena-lab-col">
+            <h5>Avaliação IA — critérios</h5>
+            <div class="arena-criterios">
+              <div class="arena-criterio"><span>Limpeza de traço</span><div class="arena-prog-bar" style="--prog:0%"></div></div>
+              <div class="arena-criterio"><span>Saturação de cor</span><div class="arena-prog-bar" style="--prog:0%"></div></div>
+              <div class="arena-criterio"><span>Contraste</span><div class="arena-prog-bar" style="--prog:0%"></div></div>
+              <div class="arena-criterio"><span>Composição</span><div class="arena-prog-bar" style="--prog:0%"></div></div>
+              <div class="arena-criterio"><span>Fidelidade ao estilo</span><div class="arena-prog-bar" style="--prog:0%"></div></div>
+            </div>
+            <p style="font-size:11px;color:#6E76A0;margin-top:8px;">Envie uma foto para receber a avaliação</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ═══ TAB: SALAS DE ESTUDO ═══ -->
+    <div class="arena-tab-panel" id="arena-salas">
+      <div class="arena-lab-header">
+        <h3>Salas de Estudo</h3>
+        <p>Dois tatuadores, lugares diferentes, mesma referência. Treinem juntos, comparem notas e evoluam em dupla.</p>
+      </div>
+
+      <div class="arena-salas-grid">
+
+        <!-- Criar sala -->
+        <div class="arena-sala-card arena-sala-create">
+          <div class="arena-sala-icon-wrap">
+            <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.3"><circle cx="16" cy="16" r="12"/><path d="M16 10v12M10 16h12"/></svg>
+          </div>
+          <h4>Criar sala de estudo</h4>
+          <p>Escolha o estilo, defina o tempo e gere o link de convite para o seu parceiro entrar.</p>
+          <div class="arena-sala-form">
+            <select id="arenaSalaEstilo">
+              <option value="">Escolha o estilo</option>
+              <option>Realismo</option>
+              <option>Pontilhismo</option>
+              <option>Old School</option>
+              <option>Blackwork</option>
+              <option>Fine Line</option>
+              <option>Aquarela</option>
+            </select>
+            <select id="arenaSalaTempo">
+              <option value="30">30 minutos</option>
+              <option value="60" selected>1 hora</option>
+              <option value="90">1h30</option>
+              <option value="120">2 horas</option>
+            </select>
+            <input type="text" placeholder="Nome da sala (opcional)" id="arenaSalaNome"/>
+            <button class="arena-btn-primary" id="arenaCriarSalaBtn">Criar sala e copiar link</button>
+          </div>
+          <div class="arena-sala-link-result" id="arenaSalaLinkResult" style="display:none;">
+            <input type="text" readonly id="arenaSalaLinkInput"/>
+            <button class="arena-btn-ghost" id="arenaCopiarLinkBtn">📋 Copiar</button>
+          </div>
+        </div>
+
+        <!-- Entrar em sala -->
+        <div class="arena-sala-card">
+          <div class="arena-sala-icon-wrap" style="background:rgba(155,108,240,0.1);border-color:rgba(155,108,240,0.2);">
+            <svg viewBox="0 0 32 32" fill="none" stroke="#9B6CF0" stroke-width="1.3"><path d="M20 16H8M14 10l6 6-6 6"/><path d="M12 4H8a4 4 0 00-4 4v16a4 4 0 004 4h16a4 4 0 004-4v-4"/></svg>
+          </div>
+          <h4>Entrar com código</h4>
+          <p>Recebeu um convite? Insira o código da sala e entre direto no treino.</p>
+          <div class="arena-sala-form">
+            <input type="text" placeholder="Código da sala (ex: ART-4F92)" id="arenaCodigoSala"/>
+            <button class="arena-btn-primary" style="background:linear-gradient(135deg,#9B6CF0,#7B9EF0);" id="arenaEntrarSalaBtn">Entrar na sala</button>
+          </div>
+        </div>
+
+        <!-- Salas ativas -->
+        <div class="arena-sala-card">
+          <div class="arena-sala-icon-wrap" style="background:rgba(72,184,154,0.1);border-color:rgba(72,184,154,0.2);">
+            <svg viewBox="0 0 32 32" fill="none" stroke="#48B89A" stroke-width="1.3"><circle cx="10" cy="12" r="4"/><circle cx="22" cy="12" r="4"/><path d="M4 26c0-3.3 2.7-5 6-5h12c3.3 0 6 1.7 6 5"/></svg>
+          </div>
+          <h4>Salas abertas agora</h4>
+          <div class="arena-salas-ativas">
+            <div class="arena-sala-ativa">
+              <div>
+                <strong>Realismo · Avançado</strong>
+                <span>@mariana + @lucas</span>
+              </div>
+              <div class="arena-sala-timer">48:22</div>
+              <button class="arena-btn-ghost" style="font-size:11px;padding:4px 10px;" onclick="alert('Modo observador em breve')">👁 Observar</button>
+            </div>
+            <div class="arena-sala-ativa">
+              <div>
+                <strong>Old School · Iniciante</strong>
+                <span>@joao + aguardando...</span>
+              </div>
+              <div class="arena-sala-timer">00:00</div>
+              <button class="arena-btn-ghost" style="font-size:11px;padding:4px 10px;" onclick="alert('Entrando na sala')">Entrar</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Como funciona -->
+      <div class="arena-howit">
+        <h4 class="arena-section-title">Como funciona a sala</h4>
+        <div class="arena-howit-steps">
+          <div class="arena-howit-step"><span class="arena-howit-num">01</span><div><strong>Escolham o estilo</strong><p>Realismo, pontilhismo, old school — a dupla decide juntos.</p></div></div>
+          <div class="arena-howit-step"><span class="arena-howit-num">02</span><div><strong>Mesma referência</strong><p>O sistema gera uma imagem única e entrega com decalque pronto para a pele artificial.</p></div></div>
+          <div class="arena-howit-step"><span class="arena-howit-num">03</span><div><strong>Pratiquem ao vivo</strong><p>Cada um no seu local, treinando o mesmo desafio ao mesmo tempo com o cronômetro compartilhado.</p></div></div>
+          <div class="arena-howit-step"><span class="arena-howit-num">04</span><div><strong>Comparem e evoluam</strong><p>Enviem as fotos, a IA avalia os dois e vocês veem as notas lado a lado.</p></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ TAB: RANKING ═══ -->
+    <div class="arena-tab-panel" id="arena-ranking">
+      <div class="arena-lab-header">
+        <h3>Ranking de Elite</h3>
+        <p>Proficiência técnica acumulada por estilo — não popularidade. Selos de autoridade visíveis no perfil.</p>
+      </div>
+
+      <!-- Sua posição -->
+      <div class="arena-rank-mypos">
+        <div class="arena-rank-myavatar">VC</div>
+        <div class="arena-rank-myinfo">
+          <span>Sua posição</span>
+          <h3>#47 <em>↑ 5 essa semana</em></h3>
+          <p>1.840 pts · Selo: <strong>Artista Técnico</strong> 🎖</p>
+        </div>
+        <div class="arena-rank-myscore">
+          <span>8.7</span>
+          <small>nota média</small>
+        </div>
+      </div>
+
+      <!-- Filtro por estilo -->
+      <div class="arena-estilo-pills" style="margin-bottom:20px;">
+        <button class="arena-estilo-pill active">Geral</button>
+        <button class="arena-estilo-pill">Realismo</button>
+        <button class="arena-estilo-pill">Blackwork</button>
+        <button class="arena-estilo-pill">Old School</button>
+        <button class="arena-estilo-pill">Fine Line</button>
+      </div>
+
+      <!-- Lista ranking -->
+      <div class="arena-rank-list">
+        <div class="arena-rank-item arena-rank-gold">
+          <span class="arena-rank-num">🥇</span>
+          <div class="arena-rank-av">MR</div>
+          <div class="arena-rank-info"><strong>Mariana Reis</strong><span>Realismo · Elite</span></div>
+          <div class="arena-rank-nota">9.8</div>
+          <div class="arena-rank-pts">3.120 pts</div>
+          <span class="arena-rank-selo">🏅 Mestre</span>
+        </div>
+        <div class="arena-rank-item arena-rank-silver">
+          <span class="arena-rank-num">🥈</span>
+          <div class="arena-rank-av">JP</div>
+          <div class="arena-rank-info"><strong>João Pedro</strong><span>Blackwork · Elite</span></div>
+          <div class="arena-rank-nota">9.7</div>
+          <div class="arena-rank-pts">2.980 pts</div>
+          <span class="arena-rank-selo">🏅 Mestre</span>
+        </div>
+        <div class="arena-rank-item arena-rank-bronze">
+          <span class="arena-rank-num">🥉</span>
+          <div class="arena-rank-av">LC</div>
+          <div class="arena-rank-info"><strong>Lucas Costa</strong><span>Old School · Elite</span></div>
+          <div class="arena-rank-nota">9.6</div>
+          <div class="arena-rank-pts">2.870 pts</div>
+          <span class="arena-rank-selo">🎖 Elite</span>
+        </div>
+        <div class="arena-rank-item">
+          <span class="arena-rank-num">4</span>
+          <div class="arena-rank-av">AF</div>
+          <div class="arena-rank-info"><strong>Ana Flávia</strong><span>Fine Line · Avançado</span></div>
+          <div class="arena-rank-nota">9.5</div>
+          <div class="arena-rank-pts">2.640 pts</div>
+          <span class="arena-rank-selo">⭐ Pro</span>
+        </div>
+        <div class="arena-rank-item">
+          <span class="arena-rank-num">5</span>
+          <div class="arena-rank-av">RM</div>
+          <div class="arena-rank-info"><strong>Rafael Mota</strong><span>Pontilhismo · Avançado</span></div>
+          <div class="arena-rank-nota">9.4</div>
+          <div class="arena-rank-pts">2.510 pts</div>
+          <span class="arena-rank-pelo">⭐ Pro</span>
+        </div>
+        <div class="arena-rank-item arena-rank-me">
+          <span class="arena-rank-num">47</span>
+          <div class="arena-rank-av" style="background:linear-gradient(135deg,var(--rl-line-a),var(--rl-line-b))">VC</div>
+          <div class="arena-rank-info"><strong>Você</strong><span>Realismo · Técnico</span></div>
+          <div class="arena-rank-nota">8.7</div>
+          <div class="arena-rank-pts">1.840 pts</div>
+          <span class="arena-rank-selo">🎖 Técnico</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ TAB: COMPETIÇÕES ═══ -->
+    <div class="arena-tab-panel" id="arena-competicoes">
+      <div class="arena-lab-header">
+        <h3>Competições Mata-Mata</h3>
+        <p>Eliminatórias diretas entre tatuadores rankeados. Avaliação por IA + comunidade. Prêmios reais para os melhores.</p>
+      </div>
+
+      <!-- Competição em destaque -->
+      <div class="arena-comp-featured">
+        <div class="arena-comp-info">
+          <span class="arena-badge arena-badge-green" style="margin-bottom:10px;display:inline-block;">🟢 Inscrições abertas</span>
+          <h3>Copa Conect Tattoo — Realismo</h3>
+          <p>16 tatuadores · 4 rodadas · Avaliação IA + Comunidade</p>
+          <div class="arena-comp-meta">
+            <span>⏱ Início: 07 Jul</span>
+            <span>👥 9 / 16 inscritos</span>
+            <span>🎯 Requisito: +500 pts</span>
+          </div>
+        </div>
+        <div class="arena-comp-prizes">
+          <div class="arena-prize arena-prize-1">
+            <span>🏆</span>
+            <div><strong>R$ 1.500</strong><small>+ Kit máquinas + Troféu</small></div>
+          </div>
+          <div class="arena-prize arena-prize-2">
+            <span>🥈</span>
+            <div><strong>R$ 500</strong><small>+ Kit tintas</small></div>
+          </div>
+          <div class="arena-prize arena-prize-3">
+            <span>🥉</span>
+            <div><strong>Kit agulhas</strong><small>+ Troféu digital</small></div>
+          </div>
+        </div>
+        <button class="arena-btn-primary" style="align-self:center;" onclick="alert('Inscrições em breve')">Inscrever-se</button>
+      </div>
+
+      <!-- Chaveamento -->
+      <div class="arena-bracket">
+        <h4 class="arena-section-title">Chaveamento — Oitavas de Final</h4>
+        <div class="arena-bracket-grid">
+          <div class="arena-match"><div class="arena-match-a">Mariana R.</div><div class="arena-match-vs">VS</div><div class="arena-match-b">João P.</div></div>
+          <div class="arena-match"><div class="arena-match-a">Lucas C.</div><div class="arena-match-vs">VS</div><div class="arena-match-b">Ana F.</div></div>
+          <div class="arena-match arena-match-you"><div class="arena-match-a">Rafael M.</div><div class="arena-match-vs">VS</div><div class="arena-match-b arena-match-b-you">Você</div></div>
+          <div class="arena-match"><div class="arena-match-a">+ 6 vagas</div><div class="arena-match-vs">em</div><div class="arena-match-b">aberto</div></div>
+        </div>
+      </div>
+
+      <!-- Troféu / Instagram -->
+      <div class="arena-insta-card">
+        <div class="arena-insta-icon">📸</div>
+        <div>
+          <h4>Conteúdo pronto pro seu Instagram</h4>
+          <p>Cada vitória gera automaticamente um card de resultado em alta resolução — pronto para postar e mostrar sua conquista para seus clientes e seguidores.</p>
+        </div>
+        <div class="arena-insta-preview">
+          <div class="arena-trophy-card">
+            <span>🏆</span>
+            <strong>Campeão</strong>
+            <small>Copa Realismo 2026</small>
+            <span style="font-size:9px;opacity:0.6;">Conect Tattoo</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+    </div>
+
+  </div>
+</div>
+
+
+
+<div class="toast" id="toast"></div>
+
+<!-- ===================== WIDGET DE CANTO: WALLET · CHAT · SHOPPING ===================== -->
+<div class="corner-widget" id="cornerWidget">
+
+  <div class="corner-btn-row">
+    <button class="corner-btn" id="walletToggle" aria-label="Wallet">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2" y="5" width="16" height="11" rx="2"/><path d="M2 8h16"/><circle cx="14" cy="12" r="1.2" fill="currentColor" stroke="none"/></svg>
+      <span>Wallet</span>
+    </button>
+    <button class="corner-btn" id="chatToggle" aria-label="Chat">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3 4h14a1 1 0 011 1v8a1 1 0 01-1 1H8l-4 3v-3H3a1 1 0 01-1-1V5a1 1 0 011-1z"/></svg>
+      <span>Chat</span>
+    </button>
+    <button class="corner-btn" id="shoppingToggle" aria-label="Shopping">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M5 7h10l-1 9a1.5 1.5 0 01-1.5 1.3h-5A1.5 1.5 0 016 16z"/><path d="M7 7V5a3 3 0 016 0v2"/></svg>
+      <span>Shopping</span>
+    </button>
+  </div>
+
+  <!-- Painel Wallet -->
+  <div class="points-panel" id="walletPanel">
+    <div class="points-panel-head">
+      <div>
+        <span class="eyebrow" style="margin-bottom:6px;display:block;">Seus tokens</span>
+        <div class="points-big">340 <span>tokens</span></div>
+      </div>
+      <button class="points-close" data-close-panel="walletPanel">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 3l10 10M13 3L3 13"/></svg>
+      </button>
+    </div>
+
+    <p class="points-desc">Use seus tokens pra adquirir cursos, recursos de ferramentas de IA e materiais de apoio dentro da plataforma.</p>
+
+    <div class="points-share-row">
+      <button class="share-btn" id="walletDepositBtn" style="flex:1;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 5v14M5 12h14"/></svg>
+        Depositar
+      </button>
+      <button class="share-btn" id="walletConvertBtn" style="flex:1;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7 7h10M7 7l3-3M7 7l3 3M17 17H7M17 17l-3-3M17 17l-3 3"/></svg>
+        Converter assinatura
+      </button>
+    </div>
+
+    <div class="points-divider"></div>
+
+    <p class="points-desc" style="margin-bottom:10px;">Gastos recentes:</p>
+    <div class="points-redeem-list">
+      <div class="redeem-item">
+        <span>Compra de materiais</span>
+        <span class="redeem-cost">— 40 tokens</span>
+      </div>
+      <div class="redeem-item">
+        <span>Ferramenta de IA · Stencil</span>
+        <span class="redeem-cost">— 15 tokens</span>
+      </div>
+    </div>
+    <p class="points-footnote">* Sistema de wallet em fase de testes. Em breve, totalmente funcional.</p>
+  </div>
+
+  <!-- Painel Chat -->
+  <div class="points-panel" id="chatPanel">
+    <div class="points-panel-head">
+      <div>
+        <span class="eyebrow" style="margin-bottom:6px;display:block;">Comunicação</span>
+        <div class="points-big" style="font-size:1.4rem;">Chat</div>
+      </div>
+      <button class="points-close" data-close-panel="chatPanel">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 3l10 10M13 3L3 13"/></svg>
+      </button>
+    </div>
+
+    <div class="points-redeem-list">
+      <div class="redeem-item">
+        <span>Chat Global</span>
+        <span class="redeem-cost">Em breve</span>
+      </div>
+      <div class="redeem-item">
+        <span>Chat Privado</span>
+        <span class="redeem-cost">Em breve</span>
+      </div>
+    </div>
+    <p class="points-footnote">* Conversas e mensagens diretas chegam em breve.</p>
+  </div>
+
+  <!-- Painel Shopping -->
+  <div class="points-panel" id="shoppingPanel">
+    <div class="points-panel-head">
+      <div>
+        <span class="eyebrow" style="margin-bottom:6px;display:block;">Stand de parceiros</span>
+        <div class="points-big" style="font-size:1.4rem;">Shopping</div>
+      </div>
+      <button class="points-close" data-close-panel="shoppingPanel">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 3l10 10M13 3L3 13"/></svg>
+      </button>
+    </div>
+
+    <p class="points-desc">Lojas e marcas parceiras com condições especiais pra membros Conect Tattoo.</p>
+
+    <div class="points-redeem-list">
+      <div class="redeem-item">
+        <span>Electric Ink</span>
+        <span class="redeem-cost">Em breve</span>
+      </div>
+      <div class="redeem-item">
+        <span>Novos parceiros</span>
+        <span class="redeem-cost">Em breve</span>
+      </div>
+    </div>
+    <p class="points-footnote">* Stand de lojas parceiras em fase de testes.</p>
+  </div>
+
+</div>
+
+
+<div class="checkout-overlay" id="checkoutOverlay">
+  <div class="checkout-modal">
+    <button class="checkout-close" id="checkoutClose">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 3l10 10M13 3L3 13"/></svg>
+    </button>
+
+    <span class="eyebrow">Finalizar compra</span>
+    <h3 id="checkoutTitle" style="margin-top:10px;">Nome do produto</h3>
+
+    <div class="checkout-summary">
+      <span>Item</span>
+      <span id="checkoutItemName">—</span>
+    </div>
+    <div class="checkout-summary">
+      <span>Total</span>
+      <span class="checkout-total" id="checkoutPrice">R$ 0</span>
+    </div>
+
+    <form class="checkout-form" id="checkoutForm">
+      <input type="text" placeholder="Nome completo" required/>
+      <input type="email" placeholder="seu@email.com" required/>
+      <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center; margin-top:8px;">
+        Ir para pagamento
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 7h12M8 2l5 5-5 5"/></svg>
+      </button>
+    </form>
+
+    <p class="checkout-note">Pagamento processado por parceiro seguro (Mercado Pago / Stripe). Acesso liberado automaticamente após a confirmação.</p>
+  </div>
+</div>
+
+<!-- ===== Supabase (login real, perfis, chat) ===== -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+<script src="script.js"></script>
+<script src="supabase-app.js"></script>
+<script src="sw-register.js"></script>
+</body>
+</html>
